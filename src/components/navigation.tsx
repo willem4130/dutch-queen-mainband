@@ -59,9 +59,7 @@ export function Navigation() {
           {/* Website Toggle - Far Left */}
           <div className="flex items-center gap-2 pl-2">
             <a
-              href="https://the-dutch-queen-full-show-v3.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="https://www.thedutchqueen.com"
               className={`font-semibold uppercase tracking-wide text-white/60 transition-all duration-300 hover:scale-110 hover:text-white/80 ${isScrolled ? "text-base md:text-lg" : "text-lg md:text-xl"}`}
             >
               full band
