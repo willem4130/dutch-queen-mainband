@@ -13,7 +13,7 @@
     "glowEffects": true
   },
   "hero": {
-    "displayMode": "text",
+    "displayMode": "logo",
     "logoFile": "hero-logo.png",
     "logoAnimation": "fade-scale",
     "textAnimation": "fade-up",

@@ -35,22 +35,13 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
       .connection;
 
     if (connection?.saveData) {
-      console.log("💾 Save Data mode enabled - optimizing video loading");
       setShouldLoadVideo(false);
       return;
     }
 
-    // Detect network quality
+    // Detect network quality - handled silently for production
     if (connection) {
-      const effectiveType = connection.effectiveType;
-      console.log(`📡 Network type detected: ${effectiveType}`);
-
-      if (effectiveType === "slow-2g" || effectiveType === "2g") {
-        // On very slow connections, show warning
-        console.warn(
-          "⚠️ Slow connection detected - video may take time to load"
-        );
-      }
+      // Network quality detected, video optimized accordingly
     }
 
     setShouldLoadVideo(true);
@@ -77,15 +68,11 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
   useEffect(() => {
     const checkDevice = () => {
       const width = window.innerWidth;
-      console.log(`📱 Screen width: ${width}px`);
       if (width < 768) {
-        console.log("Device: Mobile");
         setDeviceType("mobile");
       } else if (width <= 1024) {
-        console.log("Device: Tablet");
         setDeviceType("tablet");
       } else {
-        console.log("Device: Desktop");
         setDeviceType("desktop");
       }
     };
@@ -103,25 +90,22 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
     const video = videoRef.current;
 
     const handleCanPlay = () => {
-      console.log("✅ Video can play - setting ready state");
       setVideoReady(true);
     };
 
     const handleLoadedData = () => {
-      console.log("✅ Video data loaded - setting ready state");
       setVideoReady(true);
     };
 
     const handleLoadedMetadata = () => {
-      console.log("📊 Video metadata loaded");
+      // Video metadata loaded
     };
 
     const handlePlaying = () => {
-      console.log("▶️ Video is now playing");
+      // Video is now playing
     };
 
-    const handleError = (e: Event) => {
-      console.error("❌ Video loading error:", e);
+    const handleError = () => {
       setVideoReady(false);
       setShowPoster(true); // Show poster on error as fallback
     };
@@ -148,8 +132,6 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
     // Show audio controls
     setHasAudio(true);
 
-    console.log(`🎬 Device type: ${deviceType}, Video ready: ${videoReady}`);
-
     // Don't show poster - let video play immediately
     setShowPoster(false);
   }, [enableVideo, deviceType, videoReady]);
@@ -169,13 +151,11 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
       ([entry]) => {
         if (entry.isIntersecting) {
           // Video is visible, play it
-          console.log("👁️ Hero section visible, playing video");
-          video
-            .play()
-            .catch((err) => console.warn("Video autoplay prevented:", err));
+          video.play().catch(() => {
+            // Video autoplay prevented
+          });
         } else {
           // Video is not visible, pause to save resources
-          console.log("👁️ Hero section not visible, pausing video");
           video.pause();
         }
       },
@@ -248,10 +228,10 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 preload="metadata"
                 poster={
                   deviceType === "mobile"
-                    ? "/videos/poster-mobile.jpg"
+                    ? "/videos/poster-mobile.jpg?v=20251104"
                     : deviceType === "tablet"
-                      ? "/videos/poster-desktop.jpg"
-                      : "/videos/poster-desktop.jpg"
+                      ? "/videos/poster-desktop.jpg?v=20251104"
+                      : "/videos/poster-desktop.jpg?v=20251104"
                 }
                 className="absolute inset-0 z-0 h-full min-h-full w-full min-w-full object-cover"
               >
@@ -259,10 +239,10 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 <source
                   src={
                     deviceType === "mobile"
-                      ? "/videos/hero-mobile.webm"
+                      ? "/videos/hero-mobile.webm?v=20251104"
                       : deviceType === "tablet"
-                        ? "/videos/hero-tablet.webm"
-                        : "/videos/hero-desktop.webm"
+                        ? "/videos/hero-tablet.webm?v=20251104"
+                        : "/videos/hero-desktop.webm?v=20251104"
                   }
                   type="video/webm"
                 />
@@ -270,10 +250,10 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 <source
                   src={
                     deviceType === "mobile"
-                      ? "/videos/hero-mobile.mp4"
+                      ? "/videos/hero-mobile.mp4?v=20251104"
                       : deviceType === "tablet"
-                        ? "/videos/hero-tablet.mp4"
-                        : "/videos/hero-desktop.mp4"
+                        ? "/videos/hero-tablet.mp4?v=20251104"
+                        : "/videos/hero-desktop.mp4?v=20251104"
                   }
                   type="video/mp4"
                 />
@@ -315,12 +295,6 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                onAnimationStart={() => {
-                  console.log("🎬 Poster animation starting");
-                }}
-                onAnimationComplete={() => {
-                  console.log("🎬 Poster animation complete");
-                }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -331,20 +305,6 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                   }
                   alt="The Dutch Queen"
                   className="absolute inset-0 h-full w-full object-cover"
-                  onError={(e) => {
-                    console.error(
-                      "❌ Failed to load hero poster image:",
-                      deviceType,
-                      (e.target as HTMLImageElement).src,
-                      e
-                    );
-                  }}
-                  onLoad={(e) => {
-                    console.log(
-                      `✅ Hero poster loaded successfully for ${deviceType}`,
-                      (e.target as HTMLImageElement).src
-                    );
-                  }}
                 />
               </motion.div>
             )}

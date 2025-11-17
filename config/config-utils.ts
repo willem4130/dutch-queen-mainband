@@ -6,9 +6,16 @@
  * 2. Generate CSS variables from config
  * 3. Apply parameter-driven styling
  * 4. Handle Queen Claude integration
+ *
+ * ARCHITECTURE NOTE:
+ * This site is configured as a single-band website for "The Dutch Queen Unplugged".
+ * Content is directly imported from the /content/bands/the-dutch-queen-unplugged/ directory.
+ * The original multi-band template structure has been removed in favor of this
+ * dedicated single-band implementation.
  */
 
 import { BandWebsiteConfig, defaultConfig, genrePresets } from "./band.config";
+// Single-band content imports - hardcoded for The Dutch Queen Unplugged
 import bandProfile from "../content/bands/the-dutch-queen-unplugged/band-profile.json";
 import aboutData from "../content/bands/the-dutch-queen-unplugged/data/about.json";
 import showsData from "../content/bands/the-dutch-queen-unplugged/data/shows.json";
