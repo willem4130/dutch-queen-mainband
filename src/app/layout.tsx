@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -43,6 +44,14 @@ export default function RootLayout({
         <Navigation />
         <main className="min-h-screen overflow-x-hidden">{children}</main>
         <Footer />
+
+        {/* Google Analytics - Only loads in production */}
+        {process.env.NODE_ENV === "production" &&
+          process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+            <GoogleAnalytics
+              gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+            />
+          )}
       </body>
     </html>
   );
