@@ -22,8 +22,8 @@ const navigation = [
 ];
 
 // Domain configuration - update these for production
-const FULLBAND_URL = "https://thedutchqueen.com";
-const UNPLUGGED_URL = "https://dutch-queen-unplugged.vercel.app";
+const FULLBAND_URL = "https://www.thedutchqueen.com";
+const UNPLUGGED_URL = "https://www.thedutchqueenunplugged.com";
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
