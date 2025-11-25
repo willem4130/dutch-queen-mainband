@@ -223,7 +223,7 @@ export const defaultConfig: BandWebsiteConfig = {
     },
     social: {
       facebook: "https://www.facebook.com/thedutchqueen",
-      instagram: "https://www.instagram.com/thedutchqueen/",
+      instagram: "https://www.instagram.com/the_dutch_queen/",
       youtube: "https://youtube.com/watch?v=xGIhqcitNIU&feature=youtu.be",
     },
     seo: {
