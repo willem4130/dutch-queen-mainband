@@ -13,12 +13,17 @@ import {
 } from "lucide-react";
 import { useBandContent } from "@/hooks/useConfig";
 import { throttle } from "@/lib/performance-utils";
+import { SiteToggle } from "./SiteToggle";
 
 const navigation = [
   { name: "Shows", href: "#shows" },
   { name: "Gallery", href: "#gallery" },
   { name: "About", href: "#about" },
 ];
+
+// Domain configuration - update these for production
+const FULLBAND_URL = "https://thedutchqueen.com";
+const UNPLUGGED_URL = "https://dutch-queen-unplugged.vercel.app";
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,21 +62,13 @@ export function Navigation() {
           className={`flex items-center justify-between transition-all duration-300 ${isScrolled ? "h-12" : "h-16"}`}
         >
           {/* Website Toggle - Far Left */}
-          <div className="flex items-center gap-2 pl-2">
-            <a
-              href="https://www.thedutchqueen.com"
-              className={`font-semibold uppercase tracking-wide text-white/60 transition-all duration-300 hover:scale-110 hover:text-white/80 ${isScrolled ? "text-base md:text-lg" : "text-lg md:text-xl"}`}
-            >
-              full band
-            </a>
-            <span className="text-white/40">|</span>
-            <a
-              href="#home"
-              onClick={(e) => handleClick(e, "#home")}
-              className={`font-semibold uppercase tracking-wide text-white/90 transition-all duration-300 hover:scale-110 ${isScrolled ? "text-base md:text-lg" : "text-lg md:text-xl"}`}
-            >
-              unplugged
-            </a>
+          <div className="flex items-center pl-2">
+            <SiteToggle
+              currentSite="fullband"
+              fullbandUrl={FULLBAND_URL}
+              unpluggedUrl={UNPLUGGED_URL}
+              isScrolled={isScrolled}
+            />
           </div>
 
           {/* Centered Navigation - Desktop */}

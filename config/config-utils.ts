@@ -8,17 +8,17 @@
  * 4. Handle Queen Claude integration
  *
  * ARCHITECTURE NOTE:
- * This site is configured as a single-band website for "The Dutch Queen Unplugged".
- * Content is directly imported from the /content/bands/the-dutch-queen-unplugged/ directory.
+ * This site is configured as a single-band website for "The Dutch Queen".
+ * Content is directly imported from the /content/bands/the-dutch-queen/ directory.
  * The original multi-band template structure has been removed in favor of this
  * dedicated single-band implementation.
  */
 
 import { BandWebsiteConfig, defaultConfig, genrePresets } from "./band.config";
-// Single-band content imports - hardcoded for The Dutch Queen Unplugged
-import bandProfile from "../content/bands/the-dutch-queen-unplugged/band-profile.json";
-import aboutData from "../content/bands/the-dutch-queen-unplugged/data/about.json";
-import showsData from "../content/bands/the-dutch-queen-unplugged/data/shows.json";
+// Single-band content imports - hardcoded for The Dutch Queen
+import bandProfile from "../content/bands/the-dutch-queen/band-profile.json";
+import aboutData from "../content/bands/the-dutch-queen/data/about.json";
+import showsData from "../content/bands/the-dutch-queen/data/shows.json";
 
 // Re-export types for convenience
 export type { BandWebsiteConfig };
