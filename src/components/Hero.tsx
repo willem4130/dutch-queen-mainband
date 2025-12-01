@@ -91,6 +91,12 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
 
     const handleCanPlay = () => {
       setVideoReady(true);
+      // Immediately play video on first load to override Intersection Observer delay
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {
+          // Autoplay prevented by browser
+        });
+      }
     };
 
     const handleLoadedData = () => {
