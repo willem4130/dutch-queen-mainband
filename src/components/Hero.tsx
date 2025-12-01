@@ -230,12 +230,23 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                   deviceType === "mobile"
                     ? "/videos/poster-mobile.jpg?v=20251104"
                     : deviceType === "tablet"
-                      ? "/videos/poster-desktop.jpg?v=20251104"
+                      ? "/videos/poster-tablet.jpg?v=20251201"
                       : "/videos/poster-desktop.jpg?v=20251104"
                 }
                 className="absolute inset-0 z-0 h-full min-h-full w-full min-w-full object-cover"
               >
-                {/* WebM format first (65% smaller, better compression) */}
+                {/* MP4 format first for Safari/iOS compatibility */}
+                <source
+                  src={
+                    deviceType === "mobile"
+                      ? "/videos/hero-mobile.mp4?v=20251104"
+                      : deviceType === "tablet"
+                        ? "/videos/hero-tablet.mp4?v=20251201"
+                        : "/videos/hero-desktop.mp4?v=20251104"
+                  }
+                  type="video/mp4"
+                />
+                {/* WebM fallback for browsers that support it (65% smaller, better compression) */}
                 <source
                   src={
                     deviceType === "mobile"
@@ -245,17 +256,6 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                         : "/videos/hero-desktop.webm?v=20251104"
                   }
                   type="video/webm"
-                />
-                {/* MP4 fallback for older browsers */}
-                <source
-                  src={
-                    deviceType === "mobile"
-                      ? "/videos/hero-mobile.mp4?v=20251104"
-                      : deviceType === "tablet"
-                        ? "/videos/hero-tablet.mp4?v=20251104"
-                        : "/videos/hero-desktop.mp4?v=20251104"
-                  }
-                  type="video/mp4"
                 />
                 {/* Fallback text for browsers that don't support video */}
                 Your browser does not support the video tag.
