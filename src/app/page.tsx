@@ -299,7 +299,12 @@ function HomeContent() {
                   viewport={{ once: true, amount: 0.1 }}
                 >
                   {show.status === "sold-out" ? (
-                    <div className="rounded-lg border border-white/10 bg-black/70 p-6 opacity-60 backdrop-blur-md">
+                    <a
+                      href={show.ticketUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block cursor-pointer rounded-lg border border-white/10 bg-black/70 p-6 opacity-60 backdrop-blur-md transition-all duration-200 ease-in-out hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-gray-500/50"
+                    >
                       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                         <div className="flex-1">
                           <div className="flex flex-col gap-4 md:flex-row md:items-center">
@@ -334,7 +339,7 @@ function HomeContent() {
                           </span>
                         </div>
                       </div>
-                    </div>
+                    </a>
                   ) : (
                     <a
                       href={show.ticketUrl}

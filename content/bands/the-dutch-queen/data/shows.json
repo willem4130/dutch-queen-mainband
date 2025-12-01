@@ -29,7 +29,7 @@
       "time": "20:15",
       "venue": "Vereeniging",
       "city": "Nijmegen",
-      "status": "sold_out",
+      "status": "sold-out",
       "ticketUrl": "https://www.stadsschouwburgendevereeniging.nl/programma/8266/50-jaar-bohemian-rhapsody/the-dutch-queen"
     },
     {
@@ -37,7 +37,7 @@
       "time": "20:15",
       "venue": "Dru fabriek",
       "city": "Ulft",
-      "status": "sold_out",
+      "status": "sold-out",
       "ticketUrl": "https://www.dru-industriepark.nl/agenda/pop/2025/12/the-dutch-queen"
     },
     {
