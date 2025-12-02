@@ -93,7 +93,7 @@
       "time": "20:30",
       "venue": "Groene Engel",
       "city": "Oss",
-      "status": "tickets",
+      "status": "sold-out",
       "ticketUrl": "https://groene-engel.stager.co/web/tickets/111471691"
     },
     {
@@ -101,7 +101,7 @@
       "time": "20:30",
       "venue": "Grenswerk",
       "city": "Venlo",
-      "status": "tickets",
+      "status": "sold-out",
       "ticketUrl": "https://www.grenswerk.nl/agenda/the-dutch-queen/"
     },
     {
