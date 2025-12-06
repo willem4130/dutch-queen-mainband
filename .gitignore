@@ -55,6 +55,9 @@ daddy_project.md
 # Website comparison reports
 website-comparison-report/
 
+# Show archive backups (local only, not needed in production)
+backups/
+
 # Large video source files (keep optimized versions only)
 /public/videos/*.mp4.backup
 /public/videos/*.webm.backup

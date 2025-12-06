@@ -1,14 +1,6 @@
 {
   "upcoming": [
     {
-      "date": "Dec 4, 2025",
-      "time": "20:30",
-      "venue": "Vorstin",
-      "city": "Hilversum",
-      "status": "tickets",
-      "ticketUrl": "https://vorstin.stager.co/shop/default/events/111493445"
-    },
-    {
       "date": "Dec 6, 2025",
       "time": "20:30",
       "venue": "Boerderij",
@@ -121,7 +113,16 @@
       "ticketUrl": "https://bibelot.stager.co/web/tickets/111500178"
     }
   ],
-  "past": [],
+  "past": [
+    {
+      "date": "Dec 4, 2025",
+      "time": "20:30",
+      "venue": "Vorstin",
+      "city": "Hilversum",
+      "status": "tickets",
+      "ticketUrl": "https://vorstin.stager.co/shop/default/events/111493445"
+    }
+  ],
   "settings": {
     "showPastShows": true,
     "maxUpcomingDisplay": 15,

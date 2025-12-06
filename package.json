@@ -18,7 +18,10 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "analyze": "cross-env ANALYZE=true next build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "archive-shows": "ts-node scripts/archive-shows.ts --dry-run",
+    "archive-shows:execute": "ts-node scripts/archive-shows.ts --execute",
+    "archive-shows:verify": "ts-node scripts/archive-shows.ts --verify"
   },
   "dependencies": {
     "@next/third-parties": "^16.0.3",
