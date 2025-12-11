@@ -1,14 +1,6 @@
 {
   "upcoming": [
     {
-      "date": "Dec 6, 2025",
-      "time": "20:30",
-      "venue": "Boerderij",
-      "city": "Zoetermeer",
-      "status": "tickets",
-      "ticketUrl": "https://poppodiumboerderij.nl/programma/thedutchqueen2025/"
-    },
-    {
       "date": "Dec 11, 2025",
       "time": "20:30",
       "venue": "Victorie",
@@ -114,6 +106,14 @@
     }
   ],
   "past": [
+    {
+      "date": "Dec 6, 2025",
+      "time": "20:30",
+      "venue": "Boerderij",
+      "city": "Zoetermeer",
+      "status": "tickets",
+      "ticketUrl": "https://poppodiumboerderij.nl/programma/thedutchqueen2025/"
+    },
     {
       "date": "Dec 4, 2025",
       "time": "20:30",
