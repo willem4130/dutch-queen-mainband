@@ -1,14 +1,6 @@
 {
   "upcoming": [
     {
-      "date": "Dec 11, 2025",
-      "time": "20:30",
-      "venue": "Victorie",
-      "city": "Alkmaar",
-      "status": "tickets",
-      "ticketUrl": "https://www.podiumvictorie.nl/programma/the-dutch-queen-2025"
-    },
-    {
       "date": "Dec 12, 2025",
       "time": "20:15",
       "venue": "Vereeniging",
@@ -106,6 +98,14 @@
     }
   ],
   "past": [
+    {
+      "date": "Dec 11, 2025",
+      "time": "20:30",
+      "venue": "Victorie",
+      "city": "Alkmaar",
+      "status": "tickets",
+      "ticketUrl": "https://www.podiumvictorie.nl/programma/the-dutch-queen-2025"
+    },
     {
       "date": "Dec 6, 2025",
       "time": "20:30",
