@@ -1,38 +1,6 @@
 {
   "upcoming": [
     {
-      "date": "Dec 12, 2025",
-      "time": "20:15",
-      "venue": "Vereeniging",
-      "city": "Nijmegen",
-      "status": "sold-out",
-      "ticketUrl": "https://www.stadsschouwburgendevereeniging.nl/programma/8266/50-jaar-bohemian-rhapsody/the-dutch-queen"
-    },
-    {
-      "date": "Dec 13, 2025",
-      "time": "20:15",
-      "venue": "Dru fabriek",
-      "city": "Ulft",
-      "status": "sold-out",
-      "ticketUrl": "https://www.dru-industriepark.nl/agenda/pop/2025/12/the-dutch-queen"
-    },
-    {
-      "date": "Dec 18, 2025",
-      "time": "20:15",
-      "venue": "Metropool",
-      "city": "Enschede",
-      "status": "tickets",
-      "ticketUrl": "https://metropool.nl/agenda/the-dutch-queen-18-dec"
-    },
-    {
-      "date": "Dec 19, 2025",
-      "time": "20:15",
-      "venue": "Lantaarn",
-      "city": "Hellendoorn",
-      "status": "tickets",
-      "ticketUrl": "https://mijnetickets.shop/de-lantaarn-exploitatie/67acf1f2dfc06"
-    },
-    {
       "date": "Dec 20, 2025",
       "time": "19:30",
       "venue": "Hedon",
@@ -98,6 +66,38 @@
     }
   ],
   "past": [
+    {
+      "date": "Dec 19, 2025",
+      "time": "20:15",
+      "venue": "Lantaarn",
+      "city": "Hellendoorn",
+      "status": "tickets",
+      "ticketUrl": "https://mijnetickets.shop/de-lantaarn-exploitatie/67acf1f2dfc06"
+    },
+    {
+      "date": "Dec 18, 2025",
+      "time": "20:15",
+      "venue": "Metropool",
+      "city": "Enschede",
+      "status": "tickets",
+      "ticketUrl": "https://metropool.nl/agenda/the-dutch-queen-18-dec"
+    },
+    {
+      "date": "Dec 13, 2025",
+      "time": "20:15",
+      "venue": "Dru fabriek",
+      "city": "Ulft",
+      "status": "sold-out",
+      "ticketUrl": "https://www.dru-industriepark.nl/agenda/pop/2025/12/the-dutch-queen"
+    },
+    {
+      "date": "Dec 12, 2025",
+      "time": "20:15",
+      "venue": "Vereeniging",
+      "city": "Nijmegen",
+      "status": "sold-out",
+      "ticketUrl": "https://www.stadsschouwburgendevereeniging.nl/programma/8266/50-jaar-bohemian-rhapsody/the-dutch-queen"
+    },
     {
       "date": "Dec 11, 2025",
       "time": "20:30",
