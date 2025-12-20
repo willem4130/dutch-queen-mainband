@@ -234,10 +234,10 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 preload="metadata"
                 poster={
                   deviceType === "mobile"
-                    ? "/videos/poster-mobile.jpg?v=20251104"
+                    ? "/videos/poster-mobile.jpg?v=20251220"
                     : deviceType === "tablet"
-                      ? "/videos/poster-tablet.jpg?v=20251201"
-                      : "/videos/poster-desktop.jpg?v=20251104"
+                      ? "/videos/poster-tablet.jpg?v=20251220"
+                      : "/videos/poster-desktop.jpg?v=20251220"
                 }
                 className="absolute inset-0 z-0 h-full min-h-full w-full min-w-full object-cover"
               >
@@ -245,10 +245,10 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 <source
                   src={
                     deviceType === "mobile"
-                      ? "/videos/hero-mobile.mp4?v=20251104"
+                      ? "/videos/hero-mobile.mp4?v=20251220"
                       : deviceType === "tablet"
-                        ? "/videos/hero-tablet.mp4?v=20251201"
-                        : "/videos/hero-desktop.mp4?v=20251104"
+                        ? "/videos/hero-tablet.mp4?v=20251220"
+                        : "/videos/hero-desktop.mp4?v=20251220"
                   }
                   type="video/mp4"
                 />
