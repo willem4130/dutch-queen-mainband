@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Analytics Setup Instructions - The Dutch Queen Unplugged</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 32px;
+            border-bottom: 3px solid #4285f4;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #4285f4;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .important {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #4285f4;
+            color: white;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 14px;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li:before {
+            content: "☐ ";
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #4285f4;
+            color: white;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Google Analytics Setup Instructions</h1>
+        <p class="subtitle">For The Dutch Queen Unplugged Website</p>
+
+        <div class="success">
+            <strong>Good News!</strong> Google Analytics is already installed on your website. You just need to connect it to your Google account and get your tracking ID.
+        </div>
+
+        <h2>What is Google Analytics?</h2>
+        <p>Google Analytics is a <strong>FREE</strong> tool from Google that tracks your website visitors and provides valuable insights:</p>
+        <ul>
+            <li><strong>Visitor Statistics:</strong> How many people visit your website</li>
+            <li><strong>Traffic Sources:</strong> Where visitors come from (Google, Facebook, ads, direct links)</li>
+            <li><strong>Geographic Data:</strong> Which countries and cities your visitors are from</li>
+            <li><strong>Device Information:</strong> Desktop vs mobile vs tablet usage</li>
+            <li><strong>Popular Sections:</strong> Which parts of your website people visit most</li>
+            <li><strong>Ad Performance:</strong> Track how well your ads perform (especially your <code>/#shows</code> links)</li>
+        </ul>
+
+        <h2>Setup Instructions</h2>
+
+        <div class="step">
+            <h3><span class="step-number">1</span>Create a Google Analytics Account</h3>
+            <ol>
+                <li>Go to <a href="https://analytics.google.com" target="_blank">https://analytics.google.com</a></li>
+                <li>Sign in with your Google account (or create one if you don't have one)</li>
+                <li>Click <strong>"Start measuring"</strong> or <strong>"Admin"</strong> (bottom left)</li>
+                <li>Click <strong>"Create Account"</strong></li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">2</span>Configure Your Account</h3>
+
+            <h4>Account Setup:</h4>
+            <ul>
+                <li><strong>Account Name:</strong> "The Dutch Queen" or "Band Management"</li>
+                <li>Check all data sharing settings (recommended)</li>
+                <li>Click <strong>"Next"</strong></li>
+            </ul>
+
+            <h4>Property Setup:</h4>
+            <ul>
+                <li><strong>Property Name:</strong> "The Dutch Queen Unplugged"</li>
+                <li><strong>Reporting Time Zone:</strong> (GMT+01:00) Amsterdam</li>
+                <li><strong>Currency:</strong> Euro (EUR)</li>
+                <li>Click <strong>"Next"</strong></li>
+            </ul>
+
+            <h4>Business Information:</h4>
+            <ul>
+                <li><strong>Industry:</strong> "Arts & Entertainment"</li>
+                <li><strong>Business Size:</strong> Select appropriate size</li>
+                <li><strong>How you plan to use Google Analytics:</strong> Check relevant options</li>
+                <li>Click <strong>"Create"</strong></li>
+            </ul>
+
+            <p>Accept the Terms of Service when prompted.</p>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">3</span>Set Up Data Stream</h3>
+            <ol>
+                <li>Select <strong>"Web"</strong> as the platform</li>
+                <li>Enter your website details:
+                    <ul>
+                        <li><strong>Website URL:</strong> <code>https://thedutchqueenunplugged.com</code></li>
+                        <li><strong>Stream Name:</strong> "Unplugged Website"</li>
+                    </ul>
+                </li>
+                <li>Click <strong>"Create Stream"</strong></li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">4</span>Get Your Measurement ID</h3>
+            <p>After creating the stream, you'll see your tracking details:</p>
+            <div class="important">
+                <strong>MEASUREMENT ID:</strong> This will look like <code>G-XXXXXXXXXX</code>
+                <br><br>
+                <strong>Important:</strong> Copy this ID - you'll need it in the next step!
+            </div>
+            <p>You can always find this later in: <strong>Admin → Data Streams → [Your Stream]</strong></p>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">5</span>Add Measurement ID to Your Website</h3>
+            <p>Send the Measurement ID to your web developer with these instructions:</p>
+
+            <div class="info">
+                <strong>For Developer:</strong> Update the file <code>.env.local</code> in the project root directory.
+                <br><br>
+                Replace <code>G-XXXXXXXXXX</code> with the actual Measurement ID:
+            </div>
+
+            <pre>NEXT_PUBLIC_BAND_ID=the-dutch-queen-unplugged
+
+# Google Analytics 4 - Get your measurement ID from https://analytics.google.com
+# Format: G-XXXXXXXXXX (replace with your actual ID)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX</pre>
+
+            <p><strong>Example:</strong> If your ID is <code>G-ABC123DEF4</code>, it should look like:</p>
+            <pre>NEXT_PUBLIC_GA_MEASUREMENT_ID=G-ABC123DEF4</pre>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">6</span>Deploy to Production</h3>
+            <p>After adding the Measurement ID:</p>
+            <ol>
+                <li>Your developer needs to deploy the updated configuration to production</li>
+                <li>Google Analytics will ONLY track on the live website (not during development)</li>
+                <li>This prevents test traffic from polluting your real visitor data</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">7</span>Verify It's Working</h3>
+            <ol>
+                <li>Open your live website: <a href="https://thedutchqueenunplugged.com" target="_blank">https://thedutchqueenunplugged.com</a></li>
+                <li>Open Google Analytics in another tab</li>
+                <li>Go to <strong>Reports → Realtime</strong></li>
+                <li>You should see yourself as a visitor in real-time!</li>
+                <li>Try visiting different sections (Shows, Gallery, About)</li>
+            </ol>
+
+            <div class="success">
+                <strong>Test Your Ad Links:</strong>
+                <br>
+                Visit <code>https://thedutchqueenunplugged.com/#shows</code> to verify:
+                <ul>
+                    <li>The page loads and scrolls to the Shows section</li>
+                    <li>Google Analytics tracks the visit with the <code>#shows</code> hash in the URL</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>What You'll See in Google Analytics</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Report Type</th>
+                    <th>What It Shows</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Realtime</strong></td>
+                    <td>Visitors on your site right now</td>
+                </tr>
+                <tr>
+                    <td><strong>Acquisition</strong></td>
+                    <td>Where visitors come from (Google, Facebook, ads, etc.)</td>
+                </tr>
+                <tr>
+                    <td><strong>Engagement</strong></td>
+                    <td>Which pages are most popular, time spent on site</td>
+                </tr>
+                <tr>
+                    <td><strong>Demographics</strong></td>
+                    <td>Location, age, interests of visitors</td>
+                </tr>
+                <tr>
+                    <td><strong>Tech</strong></td>
+                    <td>Devices, browsers, screen sizes</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Important Notes</h2>
+
+        <div class="info">
+            <h3>About Your Ads</h3>
+            <p>Your ad links to <code>thedutchqueenunplugged.com/#shows</code> will work perfectly! The setup automatically:</p>
+            <ul>
+                <li>Tracks visitors who click your ads</li>
+                <li>Records which section they landed on (#shows, #gallery, etc.)</li>
+                <li>Shows you which ads are driving the most traffic</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <h3>Privacy & GDPR (Netherlands/EU)</h3>
+            <p>Since you're operating in the Netherlands (EU), you may be legally required to:</p>
+            <ul>
+                <li>Add a cookie consent banner to your website</li>
+                <li>Get visitor permission before tracking</li>
+                <li>Provide a privacy policy</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Consult with a legal professional about EU privacy requirements.</p>
+        </div>
+
+        <div class="info">
+            <h3>Data Collection Timeline</h3>
+            <ul>
+                <li><strong>Realtime Reports:</strong> Available immediately</li>
+                <li><strong>Standard Reports:</strong> Data appears within 24-48 hours</li>
+                <li><strong>Full Features:</strong> Some reports need 30 days of data to show trends</li>
+            </ul>
+        </div>
+
+        <h2>Helpful Resources</h2>
+        <ul>
+            <li><a href="https://analytics.google.com" target="_blank">Google Analytics Dashboard</a></li>
+            <li><a href="https://support.google.com/analytics" target="_blank">Google Analytics Help Center</a></li>
+            <li><a href="https://skillshop.withgoogle.com/analytics" target="_blank">Free Google Analytics Training</a></li>
+        </ul>
+
+        <h2>Troubleshooting</h2>
+
+        <h3>Not seeing any data?</h3>
+        <ul class="checklist">
+            <li>Verify the Measurement ID is correct (check for typos)</li>
+            <li>Confirm the website has been deployed with the new configuration</li>
+            <li>Make sure you're looking at the Realtime report (not historical reports)</li>
+            <li>Check that you're visiting the live website (not localhost)</li>
+            <li>Try clearing your browser cache and visiting again</li>
+        </ul>
+
+        <h3>Need Help?</h3>
+        <p>Contact your web developer if you:</p>
+        <ul>
+            <li>Can't find the <code>.env.local</code> file</li>
+            <li>Don't know how to deploy the changes</li>
+            <li>See errors after adding the Measurement ID</li>
+            <li>Need help setting up more advanced tracking</li>
+        </ul>
+
+        <div class="footer">
+            <p><strong>The Dutch Queen Unplugged</strong></p>
+            <p>Google Analytics Setup Guide</p>
+            <p>Last Updated: November 2025</p>
+        </div>
+    </div>
+</body>
+</html>

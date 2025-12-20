@@ -18,7 +18,7 @@ import { BandWebsiteConfig, defaultConfig, genrePresets } from "./band.config";
 // Single-band content imports - hardcoded for The Dutch Queen
 import bandProfile from "../content/bands/the-dutch-queen/band-profile.json";
 import aboutData from "../content/bands/the-dutch-queen/data/about.json";
-import showsData from "../content/bands/the-dutch-queen/data/shows.json";
+// Shows data now loaded from API (see getShowsData function below)
 
 // Re-export types for convenience
 export type { BandWebsiteConfig };
@@ -335,22 +335,94 @@ export function getBandContent() {
 }
 
 /**
- * Get shows/tour dates data
+ * API show format (from backend)
  */
-export function getShowsData() {
+interface ApiShow {
+  date: string;
+  time: string;
+  venue: {
+    name: string;
+    city: string;
+    country: string;
+  };
+  ticketUrl: string;
+  soldOut: boolean;
+}
+
+/**
+ * Get shows/tour dates data from API or JSON fallback
+ * Now async to support API fetching
+ */
+export async function getShowsData() {
+  const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
+  const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
+  const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
+
+  // Try to fetch from API if enabled
+  if (useCMS && apiUrl) {
+    try {
+      const response = await fetch(`${apiUrl}/bands/${bandId}`, {
+        next: { revalidate: 60 }, // ISR - revalidate every 60 seconds
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // API returns shows in different format than frontend expects
+      // Need to transform: {venue: {name, city}, soldOut: boolean}
+      // To: {venue: string, city: string, status: string}
+      const transformShow = (show: ApiShow) => ({
+        date: show.date,
+        time: show.time,
+        venue: show.venue.name,
+        city: show.venue.city,
+        status: show.soldOut ? "sold-out" : "tickets",
+        ticketUrl: show.ticketUrl,
+      });
+
+      const now = new Date();
+      const allShows = data.shows || { upcoming: [], past: [] };
+
+      // Combine all shows and re-filter based on current date
+      const combined = [...(allShows.upcoming || []), ...(allShows.past || [])];
+
+      return {
+        upcoming: combined
+          .filter((show) => new Date(show.date) >= now)
+          .sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+          )
+          .map(transformShow),
+        past: combined
+          .filter((show) => new Date(show.date) < now)
+          .sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          )
+          .map(transformShow),
+        settings: allShows.settings || {
+          showPastShows: true,
+          maxUpcomingDisplay: 10,
+          maxPastDisplay: 5,
+          autoArchiveAfterDays: 7,
+        },
+      };
+    } catch (error) {
+      console.error("Failed to fetch shows from API, using JSON fallback:", error);
+      // Fall through to JSON fallback below
+    }
+  }
+
+  // Fallback to JSON file if API is disabled or failed
   try {
-    return {
-      upcoming: showsData.upcoming || [],
-      past: showsData.past || [],
-      settings: showsData.settings || {
-        showPastShows: true,
-        maxUpcomingDisplay: 10,
-        maxPastDisplay: 5,
-        autoArchiveAfterDays: 7,
-      },
-    };
+    const fallback = await import(
+      "../content/bands/the-dutch-queen/data/shows.json"
+    );
+    return fallback.default;
   } catch (error) {
-    console.error("Error loading shows data:", error);
+    console.error("Error loading shows data from JSON:", error);
     return {
       upcoming: [],
       past: [],

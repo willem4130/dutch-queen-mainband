@@ -8,6 +8,27 @@
  */
 
 import { useEffect, useState } from "react";
+
+// Type for shows data structure used in this site
+interface ShowData {
+  date: string;
+  time: string;
+  venue: string;
+  city: string;
+  status: string;
+  ticketUrl?: string;
+}
+
+interface ShowsData {
+  upcoming: ShowData[];
+  past: ShowData[];
+  settings: {
+    showPastShows: boolean;
+    maxUpcomingDisplay: number;
+    maxPastDisplay: number;
+    autoArchiveAfterDays: number;
+  };
+}
 import {
   getConfig,
   loadConfig,
@@ -151,33 +172,36 @@ export function useMediaPaths() {
 
 /**
  * Hook for shows/tour dates data
+ * Now handles async API loading with loading states
  */
 export function useShows() {
-  try {
-    const shows = getShowsData();
-    return {
-      upcoming: shows.upcoming || [],
-      past: shows.past || [],
-      settings: shows.settings || {
-        showPastShows: true,
-        maxUpcomingDisplay: 10,
-        maxPastDisplay: 5,
-        autoArchiveAfterDays: 7,
-      },
-    };
-  } catch (error) {
-    console.error("Error loading shows data:", error);
-    return {
-      upcoming: [],
-      past: [],
-      settings: {
-        showPastShows: true,
-        maxUpcomingDisplay: 10,
-        maxPastDisplay: 5,
-        autoArchiveAfterDays: 7,
-      },
-    };
-  }
+  const [shows, setShows] = useState<ShowsData>({
+    upcoming: [],
+    past: [],
+    settings: {
+      showPastShows: true,
+      maxUpcomingDisplay: 10,
+      maxPastDisplay: 5,
+      autoArchiveAfterDays: 7,
+    },
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    getShowsData()
+      .then((data) => {
+        setShows(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error loading shows:", err);
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
+  return { ...shows, loading, error };
 }
 
 // ================================
