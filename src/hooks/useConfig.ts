@@ -33,8 +33,10 @@ import {
   getConfig,
   loadConfig,
   getBandContent,
+  getBandContentFromAPI,
   getShowsData,
   getMediaPaths,
+  getGalleryData,
   getConfiguredClasses,
   getAnimationClasses,
   getAnimationDuration,
@@ -121,6 +123,45 @@ export function useBandContent() {
 }
 
 /**
+ * Hook for band content from CMS API
+ * Fetches content from the admin backend with fallback to JSON files
+ */
+export function useBandContentAsync() {
+  const [content, setContent] = useState<{
+    bandName: string;
+    tagline: string;
+    description: { short: string; medium: string; long: string };
+    social: Record<string, string>;
+    contact: { email: string; phone?: string; address?: string };
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    getBandContentFromAPI()
+      .then((data) => {
+        setContent(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error loading band content:", err);
+        setError(err);
+        setLoading(false);
+        // Use synchronous fallback on error
+        setContent(getBandContent());
+      });
+  }, []);
+
+  // Return sync version immediately, async version when ready
+  return {
+    content: content || getBandContent(),
+    loading,
+    error,
+    isFromAPI: content !== null && !error,
+  };
+}
+
+/**
  * Hook for media paths and assets
  */
 export function useMediaPaths() {
@@ -202,6 +243,33 @@ export function useShows() {
   }, []);
 
   return { ...shows, loading, error };
+}
+
+/**
+ * Hook for gallery images from CMS API
+ * Fetches images from the admin backend with fallback to local files
+ */
+export function useGallery() {
+  const [gallery, setGallery] = useState<{
+    images: Array<{ src: string; alt: string; width?: number; height?: number }>;
+  }>({ images: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    getGalleryData()
+      .then((data) => {
+        setGallery(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error loading gallery:", err);
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
+  return { ...gallery, loading, error };
 }
 
 // ================================

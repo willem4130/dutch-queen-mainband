@@ -267,7 +267,70 @@ export function getAnimationClasses() {
 // ================================
 
 /**
- * Get band content with fallbacks
+ * Get band content from API or JSON fallback
+ * Fetches profile, about, contact, and social data
+ */
+export async function getBandContentFromAPI(): Promise<{
+  bandName: string;
+  tagline: string;
+  description: {
+    short: string;
+    medium: string;
+    long: string;
+  };
+  social: Record<string, string>;
+  contact: {
+    email: string;
+    phone?: string;
+    address?: string;
+  };
+}> {
+  const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
+  const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
+  const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
+
+  if (useCMS && apiUrl) {
+    try {
+      const response = await fetch(`${apiUrl}/bands/${bandId}`, {
+        next: {
+          revalidate: 60,
+          tags: ["content", `band-${bandId}`],
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return {
+        bandName: data.profile?.name || "The Dutch Queen",
+        tagline: data.profile?.tagline || "Een ode aan Queen",
+        description: {
+          short: data.about?.descriptions?.short || "",
+          medium: data.about?.descriptions?.medium || "",
+          long: data.about?.descriptions?.long || "",
+        },
+        social: data.social || {},
+        contact: {
+          email: data.contact?.email || "",
+          phone: data.contact?.phone,
+          address: data.contact?.address,
+        },
+      };
+    } catch (error) {
+      console.error("Failed to fetch band content from API:", error);
+      // Fall through to JSON fallback
+    }
+  }
+
+  // Fallback to existing getBandContent() which uses JSON imports
+  return getBandContent();
+}
+
+/**
+ * Get band content with fallbacks (sync version for backward compatibility)
  */
 export function getBandContent() {
   try {
@@ -362,7 +425,10 @@ export async function getShowsData() {
   if (useCMS && apiUrl) {
     try {
       const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        next: { revalidate: 60 }, // ISR - revalidate every 60 seconds
+        next: {
+          revalidate: 60, // ISR - revalidate every 60 seconds
+          tags: ['shows', `band-${bandId}`], // On-demand revalidation tags
+        },
       });
 
       if (!response.ok) {
@@ -434,6 +500,79 @@ export async function getShowsData() {
       },
     };
   }
+}
+
+/**
+ * API media item format (from backend gallery)
+ */
+interface ApiMediaItem {
+  id: string;
+  url: string;
+  thumbnailUrl: string;
+  title?: string;
+  description?: string;
+  type: string;
+  category?: string;
+  tags: string[];
+  width?: number;
+  height?: number;
+}
+
+/**
+ * Get gallery data from API or local fallback
+ */
+export async function getGalleryData(): Promise<{
+  images: Array<{
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  }>;
+}> {
+  const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
+  const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
+  const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
+
+  if (useCMS && apiUrl) {
+    try {
+      const response = await fetch(`${apiUrl}/bands/${bandId}`, {
+        next: {
+          revalidate: 60,
+          tags: ["media", `band-${bandId}`],
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Transform API format to frontend format
+      const images = (data.gallery?.images || []).map((item: ApiMediaItem) => ({
+        src: item.url,
+        alt: item.title || item.description || "Gallery image",
+        width: item.width,
+        height: item.height,
+      }));
+
+      return { images };
+    } catch (error) {
+      console.error("Failed to fetch gallery from API:", error);
+      // Fall through to local fallback
+    }
+  }
+
+  // Local fallback - return paths from config
+  const config = getConfig();
+  const localImages = config.media?.gallery?.images || [];
+
+  return {
+    images: localImages.map((filename: string) => ({
+      src: `/gallery/${filename}`,
+      alt: "Gallery image",
+    })),
+  };
 }
 
 /**
