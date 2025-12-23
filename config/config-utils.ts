@@ -292,10 +292,7 @@ export async function getBandContentFromAPI(): Promise<{
   if (useCMS && apiUrl) {
     try {
       const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        next: {
-          revalidate: 60,
-          tags: ["content", `band-${bandId}`],
-        },
+        cache: 'no-store', // Always fetch fresh data
       });
 
       if (!response.ok) {
@@ -425,10 +422,7 @@ export async function getShowsData() {
   if (useCMS && apiUrl) {
     try {
       const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        next: {
-          revalidate: 60, // ISR - revalidate every 60 seconds
-          tags: ['shows', `band-${bandId}`], // On-demand revalidation tags
-        },
+        cache: 'no-store', // Always fetch fresh data
       });
 
       if (!response.ok) {
@@ -449,23 +443,19 @@ export async function getShowsData() {
         ticketUrl: show.ticketUrl,
       });
 
-      const now = new Date();
       const allShows = data.shows || { upcoming: [], past: [] };
 
-      // Combine all shows and re-filter based on current date
-      const combined = [...(allShows.upcoming || []), ...(allShows.past || [])];
-
+      // Trust the API's categorization (based on isPast field in database)
+      // Don't re-filter by date - the admin controls what's upcoming/past
       return {
-        upcoming: combined
-          .filter((show) => new Date(show.date) >= now)
+        upcoming: (allShows.upcoming || [])
           .sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            (a: ApiShow, b: ApiShow) => new Date(a.date).getTime() - new Date(b.date).getTime()
           )
           .map(transformShow),
-        past: combined
-          .filter((show) => new Date(show.date) < now)
+        past: (allShows.past || [])
           .sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+            (a: ApiShow, b: ApiShow) => new Date(b.date).getTime() - new Date(a.date).getTime()
           )
           .map(transformShow),
         settings: allShows.settings || {
@@ -536,10 +526,7 @@ export async function getGalleryData(): Promise<{
   if (useCMS && apiUrl) {
     try {
       const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        next: {
-          revalidate: 60,
-          tags: ["media", `band-${bandId}`],
-        },
+        cache: 'no-store', // Always fetch fresh data
       });
 
       if (!response.ok) {

@@ -1,14 +1,6 @@
 {
   "upcoming": [
     {
-      "date": "Dec 20, 2025",
-      "time": "19:30",
-      "venue": "Hedon",
-      "city": "Zwolle",
-      "status": "tickets",
-      "ticketUrl": "https://hedon-zwolle.nl/voorstelling/32447/the-dutch-queen"
-    },
-    {
       "date": "Dec 28, 2025",
       "time": "20:30",
       "venue": "Effenaar",
@@ -66,6 +58,14 @@
     }
   ],
   "past": [
+    {
+      "date": "Dec 20, 2025",
+      "time": "19:30",
+      "venue": "Hedon",
+      "city": "Zwolle",
+      "status": "tickets",
+      "ticketUrl": "https://hedon-zwolle.nl/voorstelling/32447/the-dutch-queen"
+    },
     {
       "date": "Dec 19, 2025",
       "time": "20:15",
