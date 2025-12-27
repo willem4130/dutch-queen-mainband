@@ -165,20 +165,8 @@ function HomeContent() {
   const aboutScale = useTransform(aboutProgress, [0, 0.3], [0.95, 1.0]);
   const aboutY = useTransform(aboutProgress, [0, 0.3], [120, 0]);
 
-  // Get bento grid pattern - use custom grid positions from API if available,
-  // otherwise fall back to orientation-based pattern algorithm
+  // Get bento grid pattern based on image orientation
   const getBentoPattern = (image: GalleryImage, index: number) => {
-    // Check if image has custom grid positions from admin
-    if (image.gridRow !== undefined && image.gridColumn !== undefined) {
-      // Custom grid positions set in admin grid builder
-      const span = image.gridSpan || 1;
-      return {
-        row: span > 1 ? `span ${span}` : "span 1",
-        col: span > 1 ? `span ${span}` : "span 1",
-      };
-    }
-
-    // Fall back to orientation-based pattern algorithm
     const orientation = getOrientation(image);
     const patterns =
       orientation === "portrait" ? portraitPatterns : landscapePatterns;
