@@ -4,7 +4,12 @@ import withBundleAnalyzer from "@next/bundle-analyzer";
 const nextConfig: NextConfig = {
   images: {
     unoptimized: false,
-    domains: [],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      },
+    ],
     formats: ["image/webp", "image/avif"],
   },
   async headers() {
