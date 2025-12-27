@@ -251,7 +251,16 @@ export function useShows() {
  */
 export function useGallery() {
   const [gallery, setGallery] = useState<{
-    images: Array<{ src: string; alt: string; width?: number; height?: number }>;
+    images: Array<{
+      src: string;
+      alt: string;
+      width?: number;
+      height?: number;
+      displayOrder?: number;
+      gridRow?: number;
+      gridColumn?: number;
+      gridSpan?: number;
+    }>;
   }>({ images: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
