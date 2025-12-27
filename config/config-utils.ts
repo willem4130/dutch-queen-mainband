@@ -506,18 +506,33 @@ interface ApiMediaItem {
   tags: string[];
   width?: number;
   height?: number;
+  // Grid layout fields
+  displayOrder?: number;
+  gridRow?: number;
+  gridColumn?: number;
+  gridSpan?: number;
+}
+
+/**
+ * Gallery image format for frontend
+ */
+export interface GalleryImage {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  // Grid layout fields for custom bento grid positioning
+  displayOrder?: number;
+  gridRow?: number;
+  gridColumn?: number;
+  gridSpan?: number;
 }
 
 /**
  * Get gallery data from API or local fallback
  */
 export async function getGalleryData(): Promise<{
-  images: Array<{
-    src: string;
-    alt: string;
-    width?: number;
-    height?: number;
-  }>;
+  images: GalleryImage[];
 }> {
   const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
   const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
@@ -536,12 +551,19 @@ export async function getGalleryData(): Promise<{
       const data = await response.json();
 
       // Transform API format to frontend format
-      const images = (data.gallery?.images || []).map((item: ApiMediaItem) => ({
+      const images: GalleryImage[] = (data.gallery?.images || []).map((item: ApiMediaItem) => ({
         src: item.url,
         alt: item.title || item.description || "Gallery image",
         width: item.width,
         height: item.height,
+        displayOrder: item.displayOrder,
+        gridRow: item.gridRow,
+        gridColumn: item.gridColumn,
+        gridSpan: item.gridSpan,
       }));
+
+      // Sort by displayOrder if present
+      images.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
 
       return { images };
     } catch (error) {

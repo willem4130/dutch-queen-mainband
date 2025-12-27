@@ -21,7 +21,7 @@ import {
 } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Hero } from "@/components/Hero";
-import { useBandContent, useMediaPaths, useShows } from "@/hooks/useConfig";
+import { useBandContent, useGallery, useShows } from "@/hooks/useConfig";
 import { throttle } from "@/lib/performance-utils";
 
 // Lazy load AnimatePresence for lightbox (only loads when user clicks gallery)
@@ -29,32 +29,22 @@ const AnimatePresence = lazy(() =>
   import("framer-motion").then((mod) => ({ default: mod.AnimatePresence }))
 );
 
-// Image orientations (portrait = taller than wide, landscape = wider than tall)
-const imageOrientations = [
-  "portrait", // 1: 800x1200
-  "landscape", // 2: 1200x800
-  "portrait", // 3: 799x1200
-  "landscape", // 4: 1200x800
-  "portrait", // 5: 800x1200
-  "portrait", // 6: 800x1200
-  "portrait", // 7: 800x1200
-  "landscape", // 8: 1200x800
-  "portrait", // 9: 800x1200
-  "portrait", // 10: 800x1200
-  "portrait", // 11: 800x1200
-  "portrait", // 12: 800x1200
-  "landscape", // 13: 1200x800
-  "landscape", // 14: 1200x800
-  "landscape", // 15: 1200x800
-  "portrait", // 16: 800x1200
-  "portrait", // 17: 800x1200
-  "landscape", // 18: 1200x800
-  "landscape", // 19: 1200x800
-  "landscape", // 20: 1200x800
-  "landscape", // 21: 1200x800
-  "landscape", // 22: 1200x800
-  "landscape", // 23: 1200x800
-];
+// Gallery image type from API
+interface GalleryImage {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
+
+// Helper to determine orientation from dimensions
+function getOrientation(image: GalleryImage): "portrait" | "landscape" {
+  if (image.width && image.height) {
+    return image.height > image.width ? "portrait" : "landscape";
+  }
+  // Default to portrait if no dimensions available
+  return "portrait";
+}
 
 // Pattern presets for portrait (tall) images
 const portraitPatterns = [
@@ -79,7 +69,7 @@ function HomeContent() {
 
   // Configuration hooks
   const content = useBandContent();
-  const media = useMediaPaths();
+  const { images: galleryImages, loading: galleryLoading } = useGallery();
   const { upcoming: upcomingShows } = useShows();
 
   // Detect desktop for bento grid patterns and check motion preferences
@@ -170,20 +160,16 @@ function HomeContent() {
   const aboutScale = useTransform(aboutProgress, [0, 0.3], [0.95, 1.0]);
   const aboutY = useTransform(aboutProgress, [0, 0.3], [120, 0]);
 
-  // Gallery images from configuration (must be declared before navigateImage/useEffect)
-  const galleryImages = media.gallery.map((path: string) =>
-    path.replace("/gallery/", "")
-  );
-
-  const getBentoPattern = (index: number) => {
-    const orientation = imageOrientations[index] || "portrait";
+  // Get bento grid pattern based on image orientation
+  const getBentoPattern = (image: GalleryImage, index: number) => {
+    const orientation = getOrientation(image);
     const patterns =
       orientation === "portrait" ? portraitPatterns : landscapePatterns;
     return patterns[index % patterns.length];
   };
 
-  const handleImageClick = (image: string, index: number) => {
-    setSelectedImage(`/gallery/${image}`);
+  const handleImageClick = (image: GalleryImage, index: number) => {
+    setSelectedImage(image.src);
     setSelectedIndex(index);
   };
 
@@ -196,7 +182,7 @@ function HomeContent() {
           : (selectedIndex - 1 + galleryImages.length) % galleryImages.length;
 
       setSelectedIndex(newIndex);
-      setSelectedImage(`/gallery/${galleryImages[newIndex]}`);
+      setSelectedImage(galleryImages[newIndex]?.src || null);
     },
     [selectedIndex, galleryImages]
   );
@@ -431,75 +417,81 @@ function HomeContent() {
 
             {/* Bento Grid */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div
-                className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:gap-6 lg:grid-cols-4"
-                style={{
-                  gridAutoRows: "200px",
-                }}
-              >
-                {galleryImages.map((image: string, i: number) => {
-                  const pattern = getBentoPattern(i);
-                  return (
-                    <motion.div
-                      key={`gallery-${i}`}
-                      className="group relative cursor-pointer overflow-hidden rounded-2xl"
-                      style={{
-                        gridRow: isDesktop && pattern ? pattern.row : "auto",
-                        gridColumn: isDesktop && pattern ? pattern.col : "auto",
-                      }}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{
-                        opacity: 1,
-                        scale: 1,
-                        transition: {
-                          duration: 0.4,
-                          delay: i * 0.03,
-                          ease: "easeOut",
-                        },
-                      }}
-                      viewport={{ once: true, amount: 0.1 }}
-                      whileHover={{
-                        scale: 1.05,
-                        transition: { duration: 0.3 },
-                      }}
-                      whileTap={{ scale: 0.96 }}
-                      onClick={() => handleImageClick(image, i)}
-                    >
-                      {/* Ambient glow effect */}
+              {galleryLoading ? (
+                <div className="flex min-h-[400px] items-center justify-center">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                </div>
+              ) : (
+                <div
+                  className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:gap-6 lg:grid-cols-4"
+                  style={{
+                    gridAutoRows: "200px",
+                  }}
+                >
+                  {galleryImages.map((image: GalleryImage, i: number) => {
+                    const pattern = getBentoPattern(image, i);
+                    return (
                       <motion.div
-                        className="absolute -inset-2 -z-10 rounded-2xl opacity-0 group-hover:opacity-100"
+                        key={`gallery-${i}`}
+                        className="group relative cursor-pointer overflow-hidden rounded-2xl"
                         style={{
-                          background:
-                            "radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, rgba(245, 158, 11, 0.15) 50%, transparent 70%)",
-                          filter: "blur(20px)",
+                          gridRow: isDesktop && pattern ? pattern.row : "auto",
+                          gridColumn: isDesktop && pattern ? pattern.col : "auto",
                         }}
-                        initial={{ scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{
+                          opacity: 1,
+                          scale: 1,
+                          transition: {
+                            duration: 0.4,
+                            delay: i * 0.03,
+                            ease: "easeOut",
+                          },
+                        }}
+                        viewport={{ once: true, amount: 0.1 }}
                         whileHover={{
-                          scale: 1.1,
-                          transition: { duration: 0.4 },
+                          scale: 1.05,
+                          transition: { duration: 0.3 },
                         }}
-                      />
-
-                      {/* Image */}
-                      <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gray-900">
-                        <Image
-                          src={`/gallery/${image}`}
-                          alt={`Gallery image ${i + 1}`}
-                          fill
-                          loading={i < 4 ? "eager" : "lazy"}
-                          quality={isDesktop ? 80 : 70}
-                          className="scale-110 object-cover transition-transform duration-500 group-hover:scale-100"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                          draggable={false}
+                        whileTap={{ scale: 0.96 }}
+                        onClick={() => handleImageClick(image, i)}
+                      >
+                        {/* Ambient glow effect */}
+                        <motion.div
+                          className="absolute -inset-2 -z-10 rounded-2xl opacity-0 group-hover:opacity-100"
+                          style={{
+                            background:
+                              "radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, rgba(245, 158, 11, 0.15) 50%, transparent 70%)",
+                            filter: "blur(20px)",
+                          }}
+                          initial={{ scale: 0.9 }}
+                          whileHover={{
+                            scale: 1.1,
+                            transition: { duration: 0.4 },
+                          }}
                         />
 
-                        {/* Gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                        {/* Image */}
+                        <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gray-900">
+                          <Image
+                            src={image.src}
+                            alt={image.alt || `Gallery image ${i + 1}`}
+                            fill
+                            loading={i < 4 ? "eager" : "lazy"}
+                            quality={isDesktop ? 80 : 70}
+                            className="scale-110 object-cover transition-transform duration-500 group-hover:scale-100"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                            draggable={false}
+                          />
+
+                          {/* Gradient overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </motion.div>
         </div>
