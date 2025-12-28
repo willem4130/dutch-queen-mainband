@@ -526,6 +526,7 @@ export interface GalleryImage {
   gridRow?: number;
   gridColumn?: number;
   gridSpan?: number;
+  hasCustomLayout?: boolean; // True when admin has set custom grid positions
 }
 
 /**
@@ -551,7 +552,7 @@ export async function getGalleryData(): Promise<{
       const data = await response.json();
 
       // Transform API format to frontend format
-      const images: GalleryImage[] = (data.gallery?.images || []).map((item: ApiMediaItem) => ({
+      const images: GalleryImage[] = (data.gallery?.images || []).map((item: ApiMediaItem & { hasCustomLayout?: boolean }) => ({
         src: item.url,
         alt: item.title || item.description || "Gallery image",
         width: item.width,
@@ -560,6 +561,7 @@ export async function getGalleryData(): Promise<{
         gridRow: item.gridRow,
         gridColumn: item.gridColumn,
         gridSpan: item.gridSpan,
+        hasCustomLayout: item.hasCustomLayout,
       }));
 
       // Sort by displayOrder if present

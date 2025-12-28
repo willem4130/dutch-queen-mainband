@@ -260,6 +260,7 @@ export function useGallery() {
       gridRow?: number;
       gridColumn?: number;
       gridSpan?: number;
+      hasCustomLayout?: boolean;
     }>;
   }>({ images: [] });
   const [loading, setLoading] = useState(true);
