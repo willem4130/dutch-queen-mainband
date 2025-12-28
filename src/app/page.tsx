@@ -497,7 +497,7 @@ function HomeContent() {
                             loading={i < 4 ? "eager" : "lazy"}
                             quality={isDesktop ? 80 : 70}
                             className="scale-110 object-cover transition-transform duration-500 group-hover:scale-100"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                             draggable={false}
                           />
 
