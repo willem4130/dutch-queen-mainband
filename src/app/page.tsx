@@ -166,18 +166,19 @@ function HomeContent() {
   const aboutScale = useTransform(aboutProgress, [0, 0.3], [0.95, 1.0]);
   const aboutY = useTransform(aboutProgress, [0, 0.3], [120, 0]);
 
-  // Get bento grid pattern - use admin custom layout if available, else orientation-based
+  // Get bento grid pattern - ALWAYS use orientation-based masonry pattern
+  // Admin controls ORDER via displayOrder, but sizing is automatic based on image dimensions
+  // Future: if gridSpan > 1, admin can override to make specific images larger
   const getBentoPattern = (image: GalleryImage, index: number) => {
-    // Use custom grid layout from admin if explicitly set
-    if (image.hasCustomLayout === true && image.gridSpan !== undefined) {
-      const span = image.gridSpan || 1;
+    // Only use custom span if admin explicitly set gridSpan > 1
+    if (image.hasCustomLayout === true && image.gridSpan && image.gridSpan > 1) {
       return {
-        row: span > 1 ? `span ${span}` : "span 1",
-        col: span > 1 ? `span ${span}` : "span 1",
+        row: `span ${image.gridSpan}`,
+        col: `span ${image.gridSpan}`,
       };
     }
 
-    // Fallback: orientation-based pattern algorithm
+    // Use orientation-based masonry pattern (the beautiful bento grid!)
     const orientation = getOrientation(image);
     const patterns =
       orientation === "portrait" ? portraitPatterns : landscapePatterns;
