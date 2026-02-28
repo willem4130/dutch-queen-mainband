@@ -17,9 +17,9 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
   const [hasAudio, setHasAudio] = useState(true); // Assume true, our videos have audio
   const { trackVideoPlay } = useAnalytics();
 
-  const [deviceType, setDeviceType] = useState<"mobile" | "tablet" | "desktop">(
-    "desktop"
-  );
+  const [deviceType, setDeviceType] = useState<
+    "mobile" | "tablet" | "desktop" | null
+  >(null);
   const [showPoster, setShowPoster] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(true);
@@ -226,14 +226,15 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
     >
       {/* Background video */}
       <div
-        className="absolute inset-0 min-h-screen overflow-hidden"
+        className="absolute inset-0 min-h-screen overflow-hidden bg-black"
         style={{ pointerEvents: "none" }}
       >
         <div className="relative h-full min-h-screen w-full">
-          {shouldLoadVideo ? (
+          {shouldLoadVideo && deviceType ? (
             <>
               {/* Video with WebM and MP4 sources for optimal performance */}
               <video
+                key={deviceType}
                 ref={videoRef}
                 autoPlay
                 loop
@@ -242,20 +243,42 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 preload="metadata"
                 poster={
                   deviceType === "mobile"
-                    ? "/videos/poster-mobile.jpg?v=20251220"
+                    ? "/videos/poster-mobile.jpg?v=20260228"
                     : deviceType === "tablet"
-                      ? "/videos/poster-tablet.jpg?v=20251220"
+                      ? "/videos/poster-tablet.jpg?v=20260228"
                       : "/videos/poster-desktop.jpg?v=20251220"
                 }
-                className="absolute inset-0 z-0 h-full min-h-full w-full min-w-full object-cover"
+                className="absolute z-0"
+                style={{
+                  objectFit:
+                    deviceType === "desktop" ? "cover" : "contain",
+                  objectPosition: "center center",
+                  ...(deviceType === "desktop"
+                    ? {
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
+                        minHeight: "100%",
+                        minWidth: "100%",
+                      }
+                    : {
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: "100%",
+                        height: "calc(100% - 3rem)",
+                        margin: "auto 0",
+                      }),
+                }}
               >
                 {/* MP4 format first for Safari/iOS compatibility */}
                 <source
                   src={
                     deviceType === "mobile"
-                      ? "/videos/hero-mobile.mp4?v=20260127"
+                      ? "/videos/hero-mobile.mp4?v=20260228"
                       : deviceType === "tablet"
-                        ? "/videos/hero-tablet.mp4?v=20260127"
+                        ? "/videos/hero-tablet.mp4?v=20260228"
                         : "/videos/hero-desktop.mp4?v=20260127"
                   }
                   type="video/mp4"
@@ -264,9 +287,9 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 <source
                   src={
                     deviceType === "mobile"
-                      ? "/videos/hero-mobile.webm?v=20260127"
+                      ? "/videos/hero-mobile.webm?v=20260228"
                       : deviceType === "tablet"
-                        ? "/videos/hero-tablet.webm?v=20260127"
+                        ? "/videos/hero-tablet.webm?v=20260228"
                         : "/videos/hero-desktop.webm?v=20260127"
                   }
                   type="video/webm"

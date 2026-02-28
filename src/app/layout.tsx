@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
+import { CookieConsent } from "@/components/CookieConsent";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,20 +42,38 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="overflow-x-hidden">
+      <head>
+        {/* Google Analytics 4 */}
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script
+              id="ga-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GA_ID}');
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body
         className={`${inter.variable} overflow-x-hidden bg-black font-sans text-white antialiased`}
       >
-        <Navigation />
-        <main className="min-h-screen overflow-x-hidden">{children}</main>
-        <Footer />
-
-        {/* Google Analytics - Only loads in production */}
-        {process.env.NODE_ENV === "production" &&
-          process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-            <GoogleAnalytics
-              gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
-            />
-          )}
+        <AnalyticsProvider>
+          <Navigation />
+          <main className="min-h-screen overflow-x-hidden">{children}</main>
+          <Footer />
+          <CookieConsent />
+        </AnalyticsProvider>
       </body>
     </html>
   );

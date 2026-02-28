@@ -1,9 +1,10 @@
 "use client";
 
-import { useBandContent } from "@/hooks/useConfig";
+import { useBandContentAsync } from "@/hooks/useConfig";
 
 export function Footer() {
-  const content = useBandContent();
+  // Use async hook to get live data from CMS API
+  const { content } = useBandContentAsync();
 
   return (
     <footer className="border-t border-white/10">

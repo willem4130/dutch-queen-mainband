@@ -61,6 +61,7 @@ backups/
 # Large video source files (keep optimized versions only)
 /public/videos/*.mp4.backup
 /public/videos/*.webm.backup
+/public/videos/backup/
 /video-originals/
 /public/videos/source/
 public/videos/NEW_queen uplugged hero 2.mov

@@ -26,6 +26,7 @@ import {
   FileDown,
 } from "lucide-react";
 import { useProData } from "@/hooks/useConfig";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { useState, useEffect, useCallback } from "react";
 
 // Copy to clipboard hook
@@ -81,6 +82,14 @@ export default function ProPage() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const activeSection = useActiveSection(["presskit", "technical", "hospitality", "downloads"]);
+  const { trackProPageView, trackDownload, trackLightboxNavigate, trackSocialClick } = useAnalytics();
+
+  // Track pro page view on mount
+  useEffect(() => {
+    if (!loading && data) {
+      trackProPageView();
+    }
+  }, [loading, data, trackProPageView]);
 
   // Track scroll for sticky nav
   useEffect(() => {
@@ -94,6 +103,7 @@ export default function ProPage() {
   const navigateLightbox = useCallback(
     (direction: "prev" | "next") => {
       if (!data?.presskit?.photos) return;
+      trackLightboxNavigate({ direction, imageIndex: lightboxIndex });
       const photos = data.presskit.photos;
       const newIndex =
         direction === "next"
@@ -102,7 +112,7 @@ export default function ProPage() {
       setLightboxIndex(newIndex);
       setLightboxImage(photos[newIndex]);
     },
-    [lightboxIndex, data?.presskit?.photos]
+    [lightboxIndex, data?.presskit?.photos, trackLightboxNavigate]
   );
 
   // Keyboard navigation for lightbox
@@ -121,6 +131,7 @@ export default function ProPage() {
   }, [lightboxImage, navigateLightbox]);
 
   const scrollToSection = (id: string) => {
+    trackProPageView({ section: id as "presskit" | "technical" | "hospitality" | "downloads" });
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -209,12 +220,12 @@ export default function ProPage() {
           className="relative z-10 text-center"
         >
           {/* Logo */}
-          <div className="mx-auto mb-6 h-32 w-64 sm:h-40 sm:w-80">
+          <div className="mx-auto mb-6 h-40 w-72 sm:h-52 sm:w-96">
             <Image
-              src="/logo/splash-logo.webp"
+              src="/logo/hero-logo.png"
               alt={bandName}
-              width={320}
-              height={160}
+              width={800}
+              height={550}
               className="h-full w-full object-contain"
               priority
             />
@@ -228,11 +239,18 @@ export default function ProPage() {
             {contact.email && (
               <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">
                 <Mail className="h-4 w-4 text-amber-400" />
-                <a href={`mailto:${contact.email}`} className="text-white hover:text-amber-300">
+                <a
+                  href={`mailto:${contact.email}`}
+                  onClick={() => trackSocialClick({ platform: "email", location: "pro-page" })}
+                  className="text-white hover:text-amber-300"
+                >
                   {contact.email}
                 </a>
                 <button
-                  onClick={() => copy(contact.email!, "email")}
+                  onClick={() => {
+                    copy(contact.email!, "email");
+                    trackSocialClick({ platform: "email", location: "pro-page" });
+                  }}
                   className="ml-1 rounded p-1 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
                   title="Copy email"
                 >
@@ -243,11 +261,18 @@ export default function ProPage() {
             {contact.phone && (
               <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">
                 <Phone className="h-4 w-4 text-amber-400" />
-                <a href={`tel:${contact.phone}`} className="text-white hover:text-amber-300">
+                <a
+                  href={`tel:${contact.phone}`}
+                  onClick={() => trackSocialClick({ platform: "phone", location: "pro-page" })}
+                  className="text-white hover:text-amber-300"
+                >
                   {contact.phone}
                 </a>
                 <button
-                  onClick={() => copy(contact.phone!, "phone")}
+                  onClick={() => {
+                    copy(contact.phone!, "phone");
+                    trackSocialClick({ platform: "phone", location: "pro-page" });
+                  }}
                   className="ml-1 rounded p-1 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
                   title="Copy phone"
                 >
@@ -514,6 +539,9 @@ export default function ProPage() {
                     href={riders.technical.pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() =>
+                      trackDownload({ fileName: "Technical Rider PDF", fileType: "pdf" })
+                    }
                     className="inline-flex items-center gap-3 rounded-lg bg-blue-600 px-6 py-4 text-lg font-medium text-white transition-colors hover:bg-blue-500"
                   >
                     <Download className="h-6 w-6" />
@@ -597,6 +625,9 @@ export default function ProPage() {
                     href={riders.hospitality.pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() =>
+                      trackDownload({ fileName: "Hospitality Rider PDF", fileType: "pdf" })
+                    }
                     className="inline-flex items-center gap-3 rounded-lg bg-green-600 px-6 py-4 text-lg font-medium text-white transition-colors hover:bg-green-500"
                   >
                     <Download className="h-6 w-6" />
@@ -638,6 +669,12 @@ export default function ProPage() {
                     href={download.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() =>
+                      trackDownload({
+                        fileName: download.name,
+                        fileType: download.type as "photo" | "logo" | "pdf" | "document" | "other",
+                      })
+                    }
                     className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-4 transition-all hover:border-purple-500/50 hover:bg-purple-500/10"
                   >
                     {download.type === "photo" && <Camera className="h-5 w-5 text-amber-400" />}

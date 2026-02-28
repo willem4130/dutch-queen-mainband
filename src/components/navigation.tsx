@@ -11,7 +11,8 @@ import {
   Phone,
   Youtube,
 } from "lucide-react";
-import { useBandContent } from "@/hooks/useConfig";
+import { useBandContentAsync } from "@/hooks/useConfig";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { throttle } from "@/lib/performance-utils";
 import { SiteToggle } from "./SiteToggle";
 
@@ -28,7 +29,9 @@ const UNPLUGGED_URL = "https://www.thedutchqueenunplugged.com";
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const content = useBandContent();
+  // Use async hook to get live data from CMS API
+  const { content } = useBandContentAsync();
+  const { trackSocialClick } = useAnalytics();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,6 +96,7 @@ export function Navigation() {
               href={content.social.facebook || "#"}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick({ platform: "facebook", location: "navigation" })}
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Facebook
@@ -103,6 +107,7 @@ export function Navigation() {
               href={content.social.instagram || "#"}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick({ platform: "instagram", location: "navigation" })}
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Instagram
@@ -113,6 +118,7 @@ export function Navigation() {
               href={content.social.youtube || "#"}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick({ platform: "youtube", location: "navigation" })}
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Youtube
@@ -121,6 +127,7 @@ export function Navigation() {
             </a>
             <a
               href={`mailto:${content.contact.email}`}
+              onClick={() => trackSocialClick({ platform: "email", location: "navigation" })}
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Mail
@@ -129,6 +136,7 @@ export function Navigation() {
             </a>
             <a
               href={`tel:${content.contact.phone}`}
+              onClick={() => trackSocialClick({ platform: "phone", location: "navigation" })}
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Phone
@@ -179,6 +187,7 @@ export function Navigation() {
                 href={content.social.facebook || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick({ platform: "facebook", location: "navigation" })}
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Facebook
@@ -189,6 +198,7 @@ export function Navigation() {
                 href={content.social.instagram || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick({ platform: "instagram", location: "navigation" })}
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Instagram
@@ -199,6 +209,7 @@ export function Navigation() {
                 href={content.social.youtube || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick({ platform: "youtube", location: "navigation" })}
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Youtube
@@ -207,6 +218,7 @@ export function Navigation() {
               </a>
               <a
                 href={`mailto:${content.contact.email}`}
+                onClick={() => trackSocialClick({ platform: "email", location: "navigation" })}
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Mail
@@ -215,6 +227,7 @@ export function Navigation() {
               </a>
               <a
                 href={`tel:${content.contact.phone}`}
+                onClick={() => trackSocialClick({ platform: "phone", location: "navigation" })}
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Phone
