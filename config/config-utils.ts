@@ -505,6 +505,7 @@ interface ApiMediaItem {
   url: string;
   thumbnailUrl: string;
   title?: string;
+  altText?: string;
   description?: string;
   type: string;
   category?: string;
@@ -560,7 +561,7 @@ export async function getGalleryData(): Promise<{
       const images: GalleryImage[] = (data.gallery?.images || []).map(
         (item: ApiMediaItem & { hasCustomLayout?: boolean }) => ({
           src: item.url,
-          alt: item.title || item.description || "Gallery image",
+          alt: item.altText || item.title || item.description || "Gallery image",
           width: item.width,
           height: item.height,
           displayOrder: item.displayOrder,
