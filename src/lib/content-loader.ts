@@ -77,19 +77,19 @@ export class ContentLoader {
       // Load all content files in parallel
       const [profile, about, social, contact, shows] = await Promise.all([
         this.loadJsonFileFromDisk<BandProfile>(
-          join(basePath, "band-profile.json")
+          join(basePath, "band-profile.json"),
         ),
         this.loadJsonFileFromDisk<AboutContent>(
-          join(basePath, "data", "about.json")
+          join(basePath, "data", "about.json"),
         ),
         this.loadJsonFileFromDisk<SocialContent>(
-          join(basePath, "data", "social.json")
+          join(basePath, "data", "social.json"),
         ),
         this.loadJsonFileFromDisk<ContactContent>(
-          join(basePath, "data", "contact.json")
+          join(basePath, "data", "contact.json"),
         ),
         this.loadJsonFileFromDisk<ShowsContent>(
-          join(basePath, "data", "shows.json")
+          join(basePath, "data", "shows.json"),
         ),
       ]);
 
@@ -276,7 +276,7 @@ let contentLoaderInstance: ContentLoader | null = null;
  * Get or create the content loader instance
  */
 export function getContentLoader(
-  config?: Partial<ContentConfig>
+  config?: Partial<ContentConfig>,
 ): ContentLoader {
   if (!contentLoaderInstance) {
     contentLoaderInstance = new ContentLoader(config);
@@ -291,7 +291,7 @@ export function getContentLoader(
  */
 export async function loadBandContent(
   bandId?: string,
-  source?: ContentSource
+  source?: ContentSource,
 ): Promise<BandContent> {
   const loader = getContentLoader({ bandId, source });
   return loader.loadBandContent();
@@ -324,7 +324,7 @@ export async function contentExists(bandId: string): Promise<boolean> {
       "content",
       "bands",
       bandId,
-      "band-profile.json"
+      "band-profile.json",
     );
     await readFile(filePath, "utf-8");
     return true;

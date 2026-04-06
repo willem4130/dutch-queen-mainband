@@ -69,7 +69,7 @@ async function optimizeImage(config) {
 
   console.log(`✅ ${description}`);
   console.log(
-    `   ${inputSizeMB}MB → ${outputSizeMB}MB (${reduction}% reduction)\n`
+    `   ${inputSizeMB}MB → ${outputSizeMB}MB (${reduction}% reduction)\n`,
   );
 }
 
@@ -107,11 +107,11 @@ async function optimizeGalleryImages() {
     const outputStats = fs.statSync(output);
     const outputSizeKB = (outputStats.size / 1024).toFixed(0);
     const reduction = ((1 - outputStats.size / inputStats.size) * 100).toFixed(
-      1
+      1,
     );
 
     console.log(
-      `✅ ${file}: ${inputSizeKB}KB → ${outputSizeKB}KB (${reduction}% reduction)`
+      `✅ ${file}: ${inputSizeKB}KB → ${outputSizeKB}KB (${reduction}% reduction)`,
     );
   }
 }

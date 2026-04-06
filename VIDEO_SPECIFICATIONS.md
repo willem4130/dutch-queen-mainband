@@ -11,11 +11,13 @@ The hero section uses device-specific video variants for optimal performance and
 ## Video Files Required
 
 ### 1. DESKTOP VIDEO
+
 **File:** `public/videos/hero-desktop.mp4`
 **File Size:** 34MB (35,884,637 bytes)
 **Duration:** 38.8 seconds
 
 #### Video Stream Specifications
+
 - **Codec:** H.264 / AVC (libx264)
 - **Profile:** Constrained Baseline
 - **Resolution:** 1920x1080 (Full HD)
@@ -31,6 +33,7 @@ The hero section uses device-specific video variants for optimal performance and
 - **Reference Frames:** 1
 
 #### Audio Stream Specifications
+
 - **Codec:** AAC-LC (Advanced Audio Coding - Low Complexity)
 - **Sample Rate:** 44,100 Hz
 - **Channels:** 2 (Stereo)
@@ -38,17 +41,20 @@ The hero section uses device-specific video variants for optimal performance and
 - **Sample Format:** fltp (floating point)
 
 #### Container
+
 - **Format:** MP4 (QuickTime/MOV compatible)
 - **Compatible Brands:** isom, iso2, avc1, mp41
 
 ---
 
 ### 2. TABLET VIDEO
+
 **File:** `public/videos/hero-tablet.mp4`
 **File Size:** 12MB (13,078,785 bytes)
 **Duration:** 24.2 seconds
 
 #### Video Stream Specifications
+
 - **Codec:** H.264 / AVC (libx264)
 - **Profile:** Constrained Baseline
 - **Resolution:** 1920x1080 (Full HD)
@@ -64,6 +70,7 @@ The hero section uses device-specific video variants for optimal performance and
 - **Reference Frames:** 1
 
 #### Audio Stream Specifications
+
 - **Codec:** AAC-LC (Advanced Audio Coding - Low Complexity)
 - **Sample Rate:** 44,100 Hz
 - **Channels:** 2 (Stereo)
@@ -71,17 +78,20 @@ The hero section uses device-specific video variants for optimal performance and
 - **Sample Format:** fltp (floating point)
 
 #### Container
+
 - **Format:** MP4 (QuickTime/MOV compatible)
 - **Compatible Brands:** isom, iso2, avc1, mp41
 
 ---
 
 ### 3. MOBILE VIDEO
+
 **File:** `public/videos/hero-mobile.mp4`
 **File Size:** 6.9MB (7,232,422 bytes)
 **Duration:** 24.2 seconds
 
 #### Video Stream Specifications
+
 - **Codec:** H.264 / AVC (libx264)
 - **Profile:** Constrained Baseline
 - **Profile:** Constrained Baseline
@@ -98,6 +108,7 @@ The hero section uses device-specific video variants for optimal performance and
 - **Reference Frames:** 1
 
 #### Audio Stream Specifications
+
 - **Codec:** AAC-LC (Advanced Audio Coding - Low Complexity)
 - **Sample Rate:** 44,100 Hz
 - **Channels:** 2 (Stereo)
@@ -105,6 +116,7 @@ The hero section uses device-specific video variants for optimal performance and
 - **Sample Format:** fltp (floating point)
 
 #### Container
+
 - **Format:** MP4 (QuickTime/MOV compatible)
 - **Compatible Brands:** isom, iso2, avc1, mp41
 
@@ -113,14 +125,17 @@ The hero section uses device-specific video variants for optimal performance and
 ## WebM Fallback Videos (Optional)
 
 ### Desktop WebM
+
 - **File:** `public/videos/hero-desktop.webm`
 - **Size:** 14MB
 
 ### Tablet WebM
+
 - **File:** `public/videos/hero-tablet.webm`
 - **Size:** 5.8MB
 
 ### Mobile WebM
+
 - **File:** `public/videos/hero-mobile.webm`
 - **Size:** 4.6MB
 
@@ -133,16 +148,19 @@ The hero section uses device-specific video variants for optimal performance and
 Poster images display while video loads or if playback fails.
 
 ### Desktop Poster
+
 - **File:** `public/videos/poster-desktop.jpg`
 - **Resolution:** 1920x1080
 - **Format:** JPEG
 
 ### Tablet Poster
+
 - **File:** `public/videos/poster-tablet.jpg`
 - **Resolution:** 1920x1080
 - **Format:** JPEG
 
 ### Mobile Poster
+
 - **File:** `public/videos/poster-mobile.jpg`
 - **Resolution:** 1920x1080
 - **Format:** JPEG
@@ -166,6 +184,7 @@ Defined in: `src/components/Hero.tsx:52-59`
 Use these exact commands to encode new videos with matching specifications:
 
 ### Desktop Video
+
 ```bash
 ffmpeg -i input.mp4 \
   -c:v libx264 \
@@ -191,6 +210,7 @@ ffmpeg -i input.mp4 \
 ```
 
 ### Tablet Video
+
 ```bash
 ffmpeg -i input.mp4 \
   -c:v libx264 \
@@ -216,6 +236,7 @@ ffmpeg -i input.mp4 \
 ```
 
 ### Mobile Video
+
 ```bash
 ffmpeg -i input.mp4 \
   -c:v libx264 \
@@ -241,6 +262,7 @@ ffmpeg -i input.mp4 \
 ```
 
 ### Generate Poster Images
+
 ```bash
 # Desktop poster (at 2 seconds)
 ffmpeg -i public/videos/hero-desktop.mp4 -ss 00:00:02 -vframes 1 -q:v 2 public/videos/poster-desktop.jpg
@@ -259,6 +281,7 @@ ffmpeg -i public/videos/hero-mobile.mp4 -ss 00:00:02 -vframes 1 -q:v 2 public/vi
 These parameters are ESSENTIAL for browser compatibility:
 
 ### ✅ MUST HAVE
+
 - **Profile:** `baseline` (not main or high) - Maximum browser compatibility
 - **Pixel Format:** `yuv420p` - Standard chroma subsampling
 - **B-Frames:** `0` - No bi-directional frames (baseline requirement)
@@ -268,6 +291,7 @@ These parameters are ESSENTIAL for browser compatibility:
 - **Color Space:** `bt709` - Standard HD color space
 
 ### ⚠️ COMMON MISTAKES TO AVOID
+
 - ❌ Using `profile:v main` or `high` - causes playback issues
 - ❌ Omitting `-movflags +faststart` - prevents streaming
 - ❌ Using variable frame rate - causes sync issues
@@ -300,16 +324,19 @@ Before deploying new videos, verify:
 ## Testing Commands
 
 ### Check video specifications:
+
 ```bash
 ffprobe -v error -show_format -show_streams public/videos/hero-desktop.mp4
 ```
 
 ### Verify faststart flag:
+
 ```bash
 ffprobe -v error -show_format public/videos/hero-desktop.mp4 | grep "fast"
 ```
 
 ### Check for B-frames (should be 0):
+
 ```bash
 ffprobe -v error -select_streams v:0 -show_entries stream=has_b_frames -of default=noprint_wrappers=1:nokey=1 public/videos/hero-desktop.mp4
 ```
@@ -321,6 +348,7 @@ ffprobe -v error -select_streams v:0 -show_entries stream=has_b_frames -of defau
 Videos are loaded in: `src/components/Hero.tsx`
 
 **Cache busting query parameters:**
+
 - Desktop: `?v=20251104`
 - Tablet: `?v=20251201`
 - Mobile: `?v=20251104`
@@ -342,6 +370,7 @@ Update these version numbers when replacing videos to force browser cache refres
 ## Browser Compatibility
 
 These specifications are tested and working on:
+
 - ✅ Chrome/Edge (all versions)
 - ✅ Safari (desktop and iOS)
 - ✅ Firefox

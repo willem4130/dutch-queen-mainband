@@ -18,11 +18,13 @@ The archive-shows script safely moves past shows from the `upcoming` array to th
 ## File Locations
 
 ### Full Band Website
+
 - **Shows Data:** `/dutch-queen-full-band-v4/content/bands/the-dutch-queen/data/shows.json`
 - **Backups:** `/dutch-queen-full-band-v4/backups/`
 - **Script:** `/dutch-queen-full-band-v4/scripts/archive-shows.ts`
 
 ### Unplugged Website
+
 - **Shows Data:** `/Queenwebsite_v3_UNPLUGGED/content/bands/the-dutch-queen-unplugged/data/shows.json`
 - **Backups:** `/Queenwebsite_v3_UNPLUGGED/backups/`
 - **Script:** Uses the same script from Full Band (shared)
@@ -39,12 +41,14 @@ npm run archive-shows
 ```
 
 **What happens:**
+
 - ✅ Creates backups of both shows.json files
 - ✅ Generates detailed reports
 - ✅ Shows what would be archived
 - ❌ Does NOT modify shows.json files
 
 **Output Example:**
+
 ```
 Shows Archive Script - DRY RUN MODE
 (No changes will be made)
@@ -76,12 +80,14 @@ npm run archive-shows:execute
 ```
 
 **What happens:**
+
 - ✅ Creates backups of both shows.json files
 - ✅ Generates detailed reports
 - ✅ Shows what is being archived
 - ✅ **MODIFIES shows.json files** (moves shows from upcoming to past)
 
 **After execution:**
+
 - Past shows are removed from the upcoming list
 - Past shows are added to the past array (most recent first)
 - All settings are preserved
@@ -97,12 +103,14 @@ npm run archive-shows:verify
 ```
 
 **What happens:**
+
 - ✅ Creates backups of current state
 - ✅ Validates JSON structure
 - ✅ Reports show counts
 - ❌ Does NOT modify files
 
 Use this to:
+
 - Confirm files are valid after execution
 - Check current show counts
 - Verify no corruption
@@ -112,9 +120,11 @@ Use this to:
 ### What Gets Archived?
 
 **Archived (moved to past):**
+
 - Shows with dates **BEFORE** today
 
 **Kept in upcoming:**
+
 - Shows happening **TODAY**
 - Shows in the **FUTURE**
 
@@ -139,19 +149,23 @@ Every time you run the script, backups are created in the `backups/` directory:
 ### Backup Types
 
 **1. JSON Backup (`shows-backup-YYYY-MM-DDTHH-MM-SS.json`)**
+
 - Complete copy of original shows.json
 - Use this to restore if something goes wrong
 
 **2. Backup Report (`shows-backup-YYYY-MM-DDTHH-MM-SS-report.md`)**
+
 - Human-readable list of all shows
 - Includes file hash and metadata
 - Easy to review what was backed up
 
 **3. Dry-Run Report (`shows-dryrun-YYYY-MM-DDTHH-MM-SS.md`)**
+
 - Preview of what would be archived
 - Summary of changes
 
 **4. Execution Report (`shows-execute-YYYY-MM-DDTHH-MM-SS.md`)**
+
 - Record of what was actually archived
 - Created when you run `--execute`
 
@@ -203,6 +217,7 @@ npm run archive-shows:verify
 ### After Each Show
 
 1. **Run dry-run:**
+
    ```bash
    npm run archive-shows
    ```
@@ -213,11 +228,13 @@ npm run archive-shows:verify
    - Read the dry-run report in `backups/`
 
 3. **Execute if satisfied:**
+
    ```bash
    npm run archive-shows:execute
    ```
 
 4. **Verify success:**
+
    ```bash
    npm run archive-shows:verify
    ```
@@ -239,6 +256,7 @@ npm run archive-shows:verify
 ### Problem: Script shows "File not found"
 
 **Solution:**
+
 - Verify you're in the correct directory
 - Check the shows.json file exists at the expected path
 - Ensure you haven't moved or renamed files
@@ -246,6 +264,7 @@ npm run archive-shows:verify
 ### Problem: Script shows "Invalid JSON structure"
 
 **Solution:**
+
 - Restore from the most recent backup
 - Check shows.json for syntax errors
 - Ensure required fields exist (upcoming, past, settings)
@@ -253,6 +272,7 @@ npm run archive-shows:verify
 ### Problem: Wrong shows are being archived
 
 **Solution:**
+
 - Check the dry-run report carefully
 - Verify the date format in shows.json is correct
 - Review the date logic section above
@@ -261,6 +281,7 @@ npm run archive-shows:verify
 ### Problem: All shows would be archived
 
 **Solution:**
+
 - The script will warn you if this happens
 - Check if your dates are correct
 - Verify today's date is correct
@@ -269,6 +290,7 @@ npm run archive-shows:verify
 ### Problem: Backups directory is getting large
 
 **Solution:**
+
 - Backups are excluded from git (in .gitignore)
 - Safe to manually delete old backups
 - Keep at least the 5 most recent backups
@@ -277,24 +299,28 @@ npm run archive-shows:verify
 ## Safety Features
 
 ### Pre-Execution Checks
+
 - ✅ File exists and is readable
 - ✅ Valid JSON structure
 - ✅ Required fields present
 - ✅ Backup created successfully
 
 ### During Execution
+
 - ✅ Conservative date parsing
 - ✅ Unparseable dates kept in upcoming
 - ✅ Atomic file writes (temp file → rename)
 - ✅ No partial writes
 
 ### Post-Execution Verification
+
 - ✅ Total show count preserved
 - ✅ Settings unchanged
 - ✅ Valid JSON structure
 - ✅ Chronological ordering
 
 ### Sanity Checks
+
 - ⚠️ Warns if archiving all shows
 - ⚠️ Warns if archiving > 10 shows
 - ❌ Errors if archiving future shows
@@ -319,7 +345,7 @@ npm run archive-shows:verify
 ```typescript
 // Only archive shows BEFORE today (not equal to today)
 const today = new Date();
-today.setHours(0, 0, 0, 0);  // Normalize to midnight
+today.setHours(0, 0, 0, 0); // Normalize to midnight
 
 const showDate = new Date(show.date);
 showDate.setHours(0, 0, 0, 0);
@@ -345,6 +371,7 @@ If anything fails, the original file is preserved.
 ### Option 1: Manual (Recommended)
 
 Run manually after each show or monthly:
+
 - Most control
 - Review each operation
 - Safest approach
@@ -363,6 +390,7 @@ Run automatically on a schedule:
 ### Option 3: GitHub Actions (Advanced)
 
 Automate via CI/CD:
+
 - Weekly scheduled run
 - Automatic commit of changes
 - Only after extensive testing
@@ -396,6 +424,7 @@ A: Yes, by manually editing shows.json. Move shows from upcoming to past array.
 ## Support
 
 For issues or questions:
+
 - Review this guide
 - Check the dry-run report
 - Verify backups exist
@@ -405,13 +434,16 @@ For issues or questions:
 ## Summary
 
 **Always safe to run:**
+
 - `npm run archive-shows` (dry-run)
 - `npm run archive-shows:verify`
 
 **Modifies files:**
+
 - `npm run archive-shows:execute` (creates backups first)
 
 **Best practice:**
+
 1. Dry-run first
 2. Review reports
 3. Execute

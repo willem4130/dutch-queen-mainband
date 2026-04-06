@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 import { CookieConsent } from "@/components/CookieConsent";
 

@@ -65,3 +65,6 @@ backups/
 /video-originals/
 /public/videos/source/
 public/videos/NEW_queen uplugged hero 2.mov
+
+# Build artifacts
+build-output.log

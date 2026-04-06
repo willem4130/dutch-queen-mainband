@@ -67,11 +67,7 @@ Edit the about content to reflect the unplugged nature:
     "Paragraph 2 about the intimate setting...",
     "Paragraph 3 about the unplugged experience..."
   ],
-  "highlights": [
-    "Highlight 1",
-    "Highlight 2",
-    "Highlight 3"
-  ]
+  "highlights": ["Highlight 1", "Highlight 2", "Highlight 3"]
 }
 ```
 
@@ -138,16 +134,19 @@ If the unplugged band has different contact info:
 ## Testing Locally
 
 1. Navigate to the project:
+
    ```bash
    cd ~/Queenwebsite_v3_UNPLUGGED
    ```
 
 2. Install dependencies (if not already done):
+
    ```bash
    npm install
    ```
 
 3. Run the development server:
+
    ```bash
    npm run dev
    ```
@@ -177,6 +176,7 @@ Vercel will automatically deploy your changes.
 ## Need Help?
 
 See the other documentation files:
+
 - `VIDEO_OPTIMIZATION_GUIDE.md` - How to optimize video files
 - `01_BAND_CONTENT.md` - Detailed content structure guide
 - `02_HERO_CONFIGURATION.md` - Hero section configuration

@@ -27,7 +27,7 @@ import { throttle } from "@/lib/performance-utils";
 
 // Lazy load AnimatePresence for lightbox (only loads when user clicks gallery)
 const AnimatePresence = lazy(() =>
-  import("framer-motion").then((mod) => ({ default: mod.AnimatePresence }))
+  import("framer-motion").then((mod) => ({ default: mod.AnimatePresence })),
 );
 
 // Gallery image type from API
@@ -80,11 +80,8 @@ function HomeContent() {
   const { upcoming: upcomingShows } = useShows();
 
   // Analytics tracking
-  const {
-    trackShowClick,
-    trackGalleryImageView,
-    trackLightboxNavigate,
-  } = useAnalytics();
+  const { trackShowClick, trackGalleryImageView, trackLightboxNavigate } =
+    useAnalytics();
 
   // Detect desktop for bento grid patterns and check motion preferences
   useEffect(() => {
@@ -92,7 +89,7 @@ function HomeContent() {
     const checkMotion = () =>
       setPrefersReducedMotion(
         window.innerWidth < 1024 ||
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches,
       );
 
     checkDesktop();
@@ -124,12 +121,12 @@ function HomeContent() {
   const showsOpacity = useTransform(
     showsProgress,
     [0, 0.15, 0.85, 1],
-    [0, 1, 1, 0.9]
+    [0, 1, 1, 0.9],
   );
   const showsScale = useTransform(
     showsProgress,
     [0, 0.15, 0.85, 1],
-    [0.85, 1, 1, 1.05]
+    [0.85, 1, 1, 1.05],
   );
   const showsY = useTransform(showsProgress, [0, 0.15], [100, 0]);
 
@@ -141,17 +138,17 @@ function HomeContent() {
   const galleryOpacity = useTransform(
     galleryProgress,
     [0, 0.2, 0.8, 1],
-    [0, 1, 1, 0.9]
+    [0, 1, 1, 0.9],
   );
   const galleryY = useTransform(
     galleryProgress,
     [0, 0.2, 0.8, 1],
-    [150, 0, 0, -80]
+    [150, 0, 0, -80],
   );
   const galleryScale = useTransform(
     galleryProgress,
     [0, 0.2, 0.8, 1],
-    [0.85, 1, 1, 1.05]
+    [0.85, 1, 1, 1.05],
   );
 
   // About section - DRAMATIC: mega parallax + scale entrance (widened trigger window for reliability)
@@ -164,12 +161,12 @@ function HomeContent() {
   const aboutBgOpacity = useTransform(
     aboutProgress,
     [0, 0.2, 0.9, 1],
-    [0, 1, 1, 0.8]
+    [0, 1, 1, 0.8],
   );
   const aboutOpacity = useTransform(
     aboutProgress,
     [0, 0.25, 0.85, 1],
-    [0, 1, 1, 0.9]
+    [0, 1, 1, 0.9],
   );
   const aboutScale = useTransform(aboutProgress, [0, 0.3], [0.95, 1.0]);
   const aboutY = useTransform(aboutProgress, [0, 0.3], [120, 0]);
@@ -179,7 +176,11 @@ function HomeContent() {
   // Future: if gridSpan > 1, admin can override to make specific images larger
   const getBentoPattern = (image: GalleryImage, index: number) => {
     // Only use custom span if admin explicitly set gridSpan > 1
-    if (image.hasCustomLayout === true && image.gridSpan && image.gridSpan > 1) {
+    if (
+      image.hasCustomLayout === true &&
+      image.gridSpan &&
+      image.gridSpan > 1
+    ) {
       return {
         row: `span ${image.gridSpan}`,
         col: `span ${image.gridSpan}`,
@@ -215,7 +216,7 @@ function HomeContent() {
       setSelectedIndex(newIndex);
       setSelectedImage(galleryImages[newIndex]?.src || null);
     },
-    [selectedIndex, galleryImages, trackLightboxNavigate]
+    [selectedIndex, galleryImages, trackLightboxNavigate],
   );
 
   // Keyboard navigation for lightbox
@@ -485,7 +486,8 @@ function HomeContent() {
                         className="group relative cursor-pointer overflow-hidden rounded-2xl"
                         style={{
                           gridRow: isDesktop && pattern ? pattern.row : "auto",
-                          gridColumn: isDesktop && pattern ? pattern.col : "auto",
+                          gridColumn:
+                            isDesktop && pattern ? pattern.col : "auto",
                         }}
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{
@@ -639,7 +641,10 @@ function HomeContent() {
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-8"
               onClick={() => {
-                trackLightboxNavigate({ direction: "close", imageIndex: selectedIndex });
+                trackLightboxNavigate({
+                  direction: "close",
+                  imageIndex: selectedIndex,
+                });
                 setSelectedImage(null);
               }}
             >
@@ -705,7 +710,10 @@ function HomeContent() {
                 <button
                   className="absolute -top-12 right-0 p-2 text-white transition-colors hover:text-amber-400"
                   onClick={() => {
-                    trackLightboxNavigate({ direction: "close", imageIndex: selectedIndex });
+                    trackLightboxNavigate({
+                      direction: "close",
+                      imageIndex: selectedIndex,
+                    });
                     setSelectedImage(null);
                   }}
                 >

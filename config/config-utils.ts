@@ -33,7 +33,7 @@ let currentConfig: BandWebsiteConfig = defaultConfig;
  * Load configuration from various sources
  */
 export function loadConfig(
-  configOverride?: Partial<BandWebsiteConfig>
+  configOverride?: Partial<BandWebsiteConfig>,
 ): BandWebsiteConfig {
   try {
     // Merge with defaults
@@ -70,7 +70,7 @@ export function getConfig(): BandWebsiteConfig {
  * Apply a genre preset
  */
 export function applyGenrePreset(
-  genre: keyof typeof genrePresets
+  genre: keyof typeof genrePresets,
 ): BandWebsiteConfig {
   currentConfig = {
     ...currentConfig,
@@ -87,7 +87,7 @@ export function applyGenrePreset(
  * Generate CSS custom properties from configuration
  */
 export function generateCSSVariables(
-  config: BandWebsiteConfig
+  config: BandWebsiteConfig,
 ): Record<string, string> {
   const vars: Record<string, string> = {};
 
@@ -292,7 +292,7 @@ export async function getBandContentFromAPI(): Promise<{
   if (useCMS && apiUrl) {
     try {
       const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        cache: 'no-store', // Always fetch fresh data
+        cache: "no-store", // Always fetch fresh data
       });
 
       if (!response.ok) {
@@ -422,7 +422,7 @@ export async function getShowsData() {
   if (useCMS && apiUrl) {
     try {
       const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        cache: 'no-store', // Always fetch fresh data
+        cache: "no-store", // Always fetch fresh data
       });
 
       if (!response.ok) {
@@ -450,12 +450,14 @@ export async function getShowsData() {
       return {
         upcoming: (allShows.upcoming || [])
           .sort(
-            (a: ApiShow, b: ApiShow) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            (a: ApiShow, b: ApiShow) =>
+              new Date(a.date).getTime() - new Date(b.date).getTime(),
           )
           .map(transformShow),
         past: (allShows.past || [])
           .sort(
-            (a: ApiShow, b: ApiShow) => new Date(b.date).getTime() - new Date(a.date).getTime()
+            (a: ApiShow, b: ApiShow) =>
+              new Date(b.date).getTime() - new Date(a.date).getTime(),
           )
           .map(transformShow),
         settings: allShows.settings || {
@@ -466,7 +468,10 @@ export async function getShowsData() {
         },
       };
     } catch (error) {
-      console.error("Failed to fetch shows from API, using JSON fallback:", error);
+      console.error(
+        "Failed to fetch shows from API, using JSON fallback:",
+        error,
+      );
       // Fall through to JSON fallback below
     }
   }
@@ -542,7 +547,7 @@ export async function getGalleryData(): Promise<{
   if (useCMS && apiUrl) {
     try {
       const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        cache: 'no-store', // Always fetch fresh data
+        cache: "no-store", // Always fetch fresh data
       });
 
       if (!response.ok) {
@@ -552,17 +557,19 @@ export async function getGalleryData(): Promise<{
       const data = await response.json();
 
       // Transform API format to frontend format
-      const images: GalleryImage[] = (data.gallery?.images || []).map((item: ApiMediaItem & { hasCustomLayout?: boolean }) => ({
-        src: item.url,
-        alt: item.title || item.description || "Gallery image",
-        width: item.width,
-        height: item.height,
-        displayOrder: item.displayOrder,
-        gridRow: item.gridRow,
-        gridColumn: item.gridColumn,
-        gridSpan: item.gridSpan,
-        hasCustomLayout: item.hasCustomLayout,
-      }));
+      const images: GalleryImage[] = (data.gallery?.images || []).map(
+        (item: ApiMediaItem & { hasCustomLayout?: boolean }) => ({
+          src: item.url,
+          alt: item.title || item.description || "Gallery image",
+          width: item.width,
+          height: item.height,
+          displayOrder: item.displayOrder,
+          gridRow: item.gridRow,
+          gridColumn: item.gridColumn,
+          gridSpan: item.gridSpan,
+          hasCustomLayout: item.hasCustomLayout,
+        }),
+      );
 
       // Sort by displayOrder if present
       images.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));

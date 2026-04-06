@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cookie, X, Shield } from 'lucide-react';
-import { useAnalyticsContext } from '@/providers/AnalyticsProvider';
-import { getConsent } from '@/lib/analytics';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Cookie, X, Shield } from "lucide-react";
+import { useAnalyticsContext } from "@/providers/AnalyticsProvider";
+import { getConsent } from "@/lib/analytics";
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
@@ -45,7 +45,7 @@ export function CookieConsent() {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          transition={{ type: "spring", damping: 25, stiffness: 200 }}
           className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
         >
           <div className="mx-auto max-w-4xl">
@@ -76,9 +76,10 @@ export function CookieConsent() {
                     We value your privacy
                   </h3>
                   <p className="text-sm leading-relaxed text-white/70">
-                    We use cookies and similar technologies to understand how you use our website,
-                    improve your experience, and show you personalized content. You can choose to
-                    accept or reject these cookies.
+                    We use cookies and similar technologies to understand how
+                    you use our website, improve your experience, and show you
+                    personalized content. You can choose to accept or reject
+                    these cookies.
                   </p>
                   <div className="flex items-center gap-2 text-xs text-white/50">
                     <Shield className="h-3.5 w-3.5" />

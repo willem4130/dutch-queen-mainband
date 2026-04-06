@@ -533,7 +533,9 @@ export function usePresskit() {
         setPresskit(data.presskit || null);
       } catch (err) {
         console.error("Error loading presskit:", err);
-        setError(err instanceof Error ? err : new Error("Failed to load presskit"));
+        setError(
+          err instanceof Error ? err : new Error("Failed to load presskit"),
+        );
       } finally {
         setLoading(false);
       }
@@ -577,7 +579,9 @@ export function useRiders() {
         setRiders(data.riders || null);
       } catch (err) {
         console.error("Error loading riders:", err);
-        setError(err instanceof Error ? err : new Error("Failed to load riders"));
+        setError(
+          err instanceof Error ? err : new Error("Failed to load riders"),
+        );
       } finally {
         setLoading(false);
       }
@@ -631,7 +635,9 @@ export function useProData() {
         });
       } catch (err) {
         console.error("Error loading pro data:", err);
-        setError(err instanceof Error ? err : new Error("Failed to load pro data"));
+        setError(
+          err instanceof Error ? err : new Error("Failed to load pro data"),
+        );
       } finally {
         setLoading(false);
       }

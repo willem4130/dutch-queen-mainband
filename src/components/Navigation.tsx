@@ -45,7 +45,7 @@ export function Navigation() {
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     e.preventDefault();
     const element = document.querySelector(href);
@@ -96,7 +96,12 @@ export function Navigation() {
               href={content.social.facebook || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackSocialClick({ platform: "facebook", location: "navigation" })}
+              onClick={() =>
+                trackSocialClick({
+                  platform: "facebook",
+                  location: "navigation",
+                })
+              }
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Facebook
@@ -107,7 +112,12 @@ export function Navigation() {
               href={content.social.instagram || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackSocialClick({ platform: "instagram", location: "navigation" })}
+              onClick={() =>
+                trackSocialClick({
+                  platform: "instagram",
+                  location: "navigation",
+                })
+              }
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Instagram
@@ -118,7 +128,12 @@ export function Navigation() {
               href={content.social.youtube || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackSocialClick({ platform: "youtube", location: "navigation" })}
+              onClick={() =>
+                trackSocialClick({
+                  platform: "youtube",
+                  location: "navigation",
+                })
+              }
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Youtube
@@ -127,7 +142,9 @@ export function Navigation() {
             </a>
             <a
               href={`mailto:${content.contact.email}`}
-              onClick={() => trackSocialClick({ platform: "email", location: "navigation" })}
+              onClick={() =>
+                trackSocialClick({ platform: "email", location: "navigation" })
+              }
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Mail
@@ -136,7 +153,9 @@ export function Navigation() {
             </a>
             <a
               href={`tel:${content.contact.phone}`}
-              onClick={() => trackSocialClick({ platform: "phone", location: "navigation" })}
+              onClick={() =>
+                trackSocialClick({ platform: "phone", location: "navigation" })
+              }
               className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
             >
               <Phone
@@ -187,7 +206,12 @@ export function Navigation() {
                 href={content.social.facebook || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackSocialClick({ platform: "facebook", location: "navigation" })}
+                onClick={() =>
+                  trackSocialClick({
+                    platform: "facebook",
+                    location: "navigation",
+                  })
+                }
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Facebook
@@ -198,7 +222,12 @@ export function Navigation() {
                 href={content.social.instagram || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackSocialClick({ platform: "instagram", location: "navigation" })}
+                onClick={() =>
+                  trackSocialClick({
+                    platform: "instagram",
+                    location: "navigation",
+                  })
+                }
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Instagram
@@ -209,7 +238,12 @@ export function Navigation() {
                 href={content.social.youtube || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackSocialClick({ platform: "youtube", location: "navigation" })}
+                onClick={() =>
+                  trackSocialClick({
+                    platform: "youtube",
+                    location: "navigation",
+                  })
+                }
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Youtube
@@ -218,7 +252,12 @@ export function Navigation() {
               </a>
               <a
                 href={`mailto:${content.contact.email}`}
-                onClick={() => trackSocialClick({ platform: "email", location: "navigation" })}
+                onClick={() =>
+                  trackSocialClick({
+                    platform: "email",
+                    location: "navigation",
+                  })
+                }
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Mail
@@ -227,7 +266,12 @@ export function Navigation() {
               </a>
               <a
                 href={`tel:${content.contact.phone}`}
-                onClick={() => trackSocialClick({ platform: "phone", location: "navigation" })}
+                onClick={() =>
+                  trackSocialClick({
+                    platform: "phone",
+                    location: "navigation",
+                  })
+                }
                 className="rounded-lg p-2 text-white/80 transition-all duration-300 hover:scale-110 hover:text-white"
               >
                 <Phone

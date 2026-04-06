@@ -15,15 +15,18 @@ This guide shows you exactly where to place your new images and video files.
 ## 📸 GALLERY IMAGES (14 images needed)
 
 ### What to provide:
+
 - **14 images** in any format (JPG, PNG, etc.)
 - Any size/resolution (I'll optimize them)
 
 ### Where to place them:
+
 ```
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/public/gallery/
 ```
 
 ### Naming convention:
+
 ```
 gallery-1.jpg  (or .png, .webp - I'll convert)
 gallery-2.jpg
@@ -33,12 +36,14 @@ gallery-14.jpg
 ```
 
 ### What I'll do for you:
+
 1. Compress and optimize each image
 2. Create WebP versions for modern browsers (gallery-1.webp, etc.)
 3. Keep JPG versions as fallback
 4. Test bento grid layout
 
 ### Current placeholders:
+
 The current gallery-1.jpg through gallery-14.jpg will be replaced with your new images.
 
 ---
@@ -46,17 +51,21 @@ The current gallery-1.jpg through gallery-14.jpg will be replaced with your new 
 ## 🎥 INTRO/HERO VIDEO (1 video needed)
 
 ### What to provide:
+
 - **1 high-quality video file** (original/uncompressed)
 - Recommended: MP4 or MOV format
 - Any resolution (preferably 1920x1080 or higher)
 
 ### Where I'll process it:
+
 I'll create optimized versions and place them in:
+
 ```
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/public/videos/
 ```
 
 ### Files I'll create (matching current structure):
+
 ```
 hero-desktop.mp4        (1920x1080, web-optimized)
 hero-desktop.webm       (WebM version for smaller file size)
@@ -70,6 +79,7 @@ poster-mobile.jpg
 ```
 
 ### Specifications I'll match:
+
 - **Desktop:** 1920x1080, 30fps, H.264/WebM
 - **Tablet:** 1280x720, 30fps
 - **Mobile:** 720x480, 30fps
@@ -77,6 +87,7 @@ poster-mobile.jpg
 - **Optimization:** Web-ready compression while maintaining quality
 
 ### How to provide the video:
+
 - Put the original file in: `/Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/video-originals/`
 - Name it: `hero-original.mp4` (or whatever extension)
 - I'll process it to create all responsive versions
@@ -88,11 +99,13 @@ poster-mobile.jpg
 ### 1. Shows/Tour Section Background
 
 **What to provide:**
+
 - 1 high-quality image
 - Recommended size: 1920x1080 or larger
 - Should work well with text overlay (dark or neutral)
 
 **Where I'll place optimized versions:**
+
 ```
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/public/shows-bg-1280.webp
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/public/shows-bg-1920.webp
@@ -103,11 +116,13 @@ poster-mobile.jpg
 ```
 
 **Also backup in content folder:**
+
 ```
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/content/bands/the-dutch-queen-unplugged/assets/backgrounds/shows-bg.jpg
 ```
 
 **How to provide:**
+
 - Put original in: `/Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/content/bands/the-dutch-queen-unplugged/assets/backgrounds/`
 - Name it: `shows-bg-original.jpg` (or .png)
 
@@ -116,11 +131,13 @@ poster-mobile.jpg
 ### 2. About Section Background
 
 **What to provide:**
+
 - 1 high-quality image
 - Recommended size: 1920x1080 or larger
 - Should work well with text overlay
 
 **Where I'll place optimized versions:**
+
 ```
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/public/about-bg-1280.webp
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/public/about-bg-1920.webp
@@ -131,11 +148,13 @@ poster-mobile.jpg
 ```
 
 **Also backup in content folder:**
+
 ```
 /Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/content/bands/the-dutch-queen-unplugged/assets/backgrounds/about-bg.jpg
 ```
 
 **How to provide:**
+
 - Put original in: `/Users/willemvandenberg/Queenwebsite_v3_UNPLUGGED/content/bands/the-dutch-queen-unplugged/assets/backgrounds/`
 - Name it: `about-bg-original.jpg` (or .png)
 
@@ -146,6 +165,7 @@ poster-mobile.jpg
 When you're ready to provide media, place files here:
 
 ### For Gallery (14 images):
+
 ```
 📁 /public/gallery/
   ├── your-image-1.jpg  → I'll rename to gallery-1.jpg
@@ -154,12 +174,14 @@ When you're ready to provide media, place files here:
 ```
 
 ### For Hero Video (1 video):
+
 ```
 📁 /video-originals/
   └── hero-original.mp4  → I'll process to 6 versions
 ```
 
 ### For Background Images (2 images):
+
 ```
 📁 /content/bands/the-dutch-queen-unplugged/assets/backgrounds/
   ├── shows-bg-original.jpg   → I'll process to 6 versions
@@ -196,12 +218,15 @@ Once you provide the files:
 If you want to skip optimization and place files directly:
 
 ### Gallery Images (manual):
+
 Place 14 files directly in `/public/gallery/` named `gallery-1.jpg` through `gallery-14.jpg`
 
 ### Hero Video (manual):
+
 Place 6 video files + 3 poster images in `/public/videos/` with exact names above
 
 ### Background Images (manual):
+
 Place responsive versions in `/public/` with exact names above
 
 **Note:** Manual placement means no optimization, no WebP generation, and larger file sizes.
@@ -211,6 +236,7 @@ Place responsive versions in `/public/` with exact names above
 ## ✨ OPTIMIZATION BENEFITS
 
 When I optimize for you:
+
 - **60-80% smaller file sizes** with WebP format
 - **Faster page loads** with responsive images
 - **Better mobile experience** with appropriate sizes
@@ -222,11 +248,13 @@ When I optimize for you:
 ## 📞 WHEN YOU'RE READY
 
 Just tell me:
+
 - "I've added the gallery images"
 - "I've added the hero video as hero-original.mp4"
 - "I've added the background images"
 
 Or ask:
+
 - "Can you check if my files are in the right place?"
 - "How do I optimize [specific file type]?"
 - "I'm ready to start with [gallery/video/backgrounds]"

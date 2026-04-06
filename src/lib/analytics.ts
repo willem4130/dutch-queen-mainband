@@ -4,8 +4,8 @@
  */
 
 // Consent storage key
-const CONSENT_KEY = 'tdq_cookie_consent';
-const CONSENT_VERSION = '1.0';
+const CONSENT_KEY = "tdq_cookie_consent";
+const CONSENT_VERSION = "1.0";
 
 export interface ConsentState {
   analytics: boolean;
@@ -18,7 +18,7 @@ export interface ConsentState {
 // ============================================================
 
 export function getConsent(): ConsentState | null {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
 
   try {
     const stored = localStorage.getItem(CONSENT_KEY);
@@ -38,7 +38,7 @@ export function getConsent(): ConsentState | null {
 }
 
 export function setConsent(analytics: boolean): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   const consent: ConsentState = {
     analytics,
@@ -49,14 +49,14 @@ export function setConsent(analytics: boolean): void {
   localStorage.setItem(CONSENT_KEY, JSON.stringify(consent));
 
   // Also set a simple cookie for potential server-side awareness
-  document.cookie = `tdq_consent=${analytics ? '1' : '0'}; path=/; max-age=31536000; SameSite=Lax`;
+  document.cookie = `tdq_consent=${analytics ? "1" : "0"}; path=/; max-age=31536000; SameSite=Lax`;
 }
 
 export function clearConsent(): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   localStorage.removeItem(CONSENT_KEY);
-  document.cookie = 'tdq_consent=; path=/; max-age=0';
+  document.cookie = "tdq_consent=; path=/; max-age=0";
 }
 
 export function hasAnalyticsConsent(): boolean {
@@ -74,12 +74,12 @@ interface GA4EventParams {
 
 function trackGA4Event(eventName: string, params?: GA4EventParams): void {
   if (!hasAnalyticsConsent()) return;
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const gtag = (window as any).gtag;
-  if (typeof gtag === 'function') {
-    gtag('event', eventName, params);
+  if (typeof gtag === "function") {
+    gtag("event", eventName, params);
   }
 }
 
@@ -87,13 +87,16 @@ function trackGA4Event(eventName: string, params?: GA4EventParams): void {
 // POSTHOG EVENT TRACKING
 // ============================================================
 
-function trackPostHogEvent(eventName: string, properties?: Record<string, unknown>): void {
+function trackPostHogEvent(
+  eventName: string,
+  properties?: Record<string, unknown>,
+): void {
   if (!hasAnalyticsConsent()) return;
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const posthog = (window as any).posthog;
-  if (posthog && typeof posthog.capture === 'function') {
+  if (posthog && typeof posthog.capture === "function") {
     posthog.capture(eventName, properties);
   }
 }
@@ -109,7 +112,12 @@ interface TrackEventOptions {
   posthogOnly?: boolean;
 }
 
-export function trackEvent({ name, properties, ga4Only, posthogOnly }: TrackEventOptions): void {
+export function trackEvent({
+  name,
+  properties,
+  ga4Only,
+  posthogOnly,
+}: TrackEventOptions): void {
   if (!hasAnalyticsConsent()) return;
 
   if (!posthogOnly) {
@@ -132,11 +140,11 @@ export function trackShowClick(params: {
   venue: string;
   date: string;
   city: string;
-  status: 'available' | 'sold-out';
+  status: "available" | "sold-out";
   ticketUrl?: string;
 }): void {
   trackEvent({
-    name: 'show_click',
+    name: "show_click",
     properties: {
       venue: params.venue,
       date: params.date,
@@ -153,10 +161,10 @@ export function trackShowClick(params: {
 export function trackGalleryImageView(params: {
   imageIndex: number;
   imageSrc: string;
-  context: 'grid' | 'lightbox';
+  context: "grid" | "lightbox";
 }): void {
   trackEvent({
-    name: 'gallery_view',
+    name: "gallery_view",
     properties: {
       image_index: params.imageIndex,
       image_src: params.imageSrc,
@@ -169,11 +177,11 @@ export function trackGalleryImageView(params: {
  * Track lightbox navigation
  */
 export function trackLightboxNavigate(params: {
-  direction: 'next' | 'prev' | 'close';
+  direction: "next" | "prev" | "close";
   imageIndex: number;
 }): void {
   trackEvent({
-    name: 'lightbox_navigate',
+    name: "lightbox_navigate",
     properties: {
       direction: params.direction,
       image_index: params.imageIndex,
@@ -185,11 +193,11 @@ export function trackLightboxNavigate(params: {
  * Track video interactions (hero video)
  */
 export function trackVideoPlay(params: {
-  action: 'play' | 'pause' | 'mute' | 'unmute';
-  videoType: 'hero';
+  action: "play" | "pause" | "mute" | "unmute";
+  videoType: "hero";
 }): void {
   trackEvent({
-    name: 'video_interaction',
+    name: "video_interaction",
     properties: {
       action: params.action,
       video_type: params.videoType,
@@ -201,11 +209,18 @@ export function trackVideoPlay(params: {
  * Track social media link clicks
  */
 export function trackSocialClick(params: {
-  platform: 'facebook' | 'instagram' | 'youtube' | 'email' | 'phone' | 'spotify' | 'tiktok';
-  location: 'navigation' | 'footer' | 'pro-page' | 'contact';
+  platform:
+    | "facebook"
+    | "instagram"
+    | "youtube"
+    | "email"
+    | "phone"
+    | "spotify"
+    | "tiktok";
+  location: "navigation" | "footer" | "pro-page" | "contact";
 }): void {
   trackEvent({
-    name: 'social_click',
+    name: "social_click",
     properties: {
       platform: params.platform,
       location: params.location,
@@ -217,12 +232,12 @@ export function trackSocialClick(params: {
  * Track /pro page views (for venues/promoters)
  */
 export function trackProPageView(params?: {
-  section?: 'presskit' | 'technical' | 'hospitality' | 'downloads';
+  section?: "presskit" | "technical" | "hospitality" | "downloads";
 }): void {
   trackEvent({
-    name: 'pro_page_view',
+    name: "pro_page_view",
     properties: {
-      section: params?.section || 'main',
+      section: params?.section || "main",
     },
   });
 }
@@ -232,10 +247,10 @@ export function trackProPageView(params?: {
  */
 export function trackDownload(params: {
   fileName: string;
-  fileType: 'photo' | 'logo' | 'pdf' | 'document' | 'other';
+  fileType: "photo" | "logo" | "pdf" | "document" | "other";
 }): void {
   trackEvent({
-    name: 'asset_download',
+    name: "asset_download",
     properties: {
       file_name: params.fileName,
       file_type: params.fileType,
@@ -251,7 +266,7 @@ export function trackExternalLinkClick(params: {
   linkText?: string;
 }): void {
   trackEvent({
-    name: 'external_link_click',
+    name: "external_link_click",
     properties: {
       url: params.url,
       link_text: params.linkText,
@@ -263,10 +278,10 @@ export function trackExternalLinkClick(params: {
  * Track section scrolls into view
  */
 export function trackSectionView(params: {
-  section: 'hero' | 'about' | 'shows' | 'gallery' | 'contact';
+  section: "hero" | "about" | "shows" | "gallery" | "contact";
 }): void {
   trackEvent({
-    name: 'section_view',
+    name: "section_view",
     properties: {
       section: params.section,
     },

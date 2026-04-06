@@ -1,6 +1,6 @@
 export function throttle<T extends (...args: unknown[]) => void>(
   func: T,
-  delay: number
+  delay: number,
 ): (...args: Parameters<T>) => void {
   let timeoutId: NodeJS.Timeout | null = null;
   let lastRan = 0;
@@ -23,7 +23,7 @@ export function throttle<T extends (...args: unknown[]) => void>(
             lastRan = now;
           }
         },
-        delay - (now - lastRan)
+        delay - (now - lastRan),
       );
     }
   };
@@ -31,7 +31,7 @@ export function throttle<T extends (...args: unknown[]) => void>(
 
 export function debounce<T extends (...args: unknown[]) => void>(
   func: T,
-  delay: number
+  delay: number,
 ): (...args: Parameters<T>) => void {
   let timeoutId: NodeJS.Timeout | null = null;
 

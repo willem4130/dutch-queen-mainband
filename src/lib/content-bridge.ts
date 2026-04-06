@@ -24,7 +24,7 @@ function isCMSEnabled(): boolean {
  * Check if new content system has data
  */
 async function hasNewContent(
-  bandId: string = "template-band"
+  bandId: string = "template-band",
 ): Promise<boolean> {
   // If CMS is enabled, try CMS first
   if (isCMSEnabled()) {
@@ -129,7 +129,7 @@ function contentToConfig(content: BandContent): Partial<BandWebsiteConfig> {
  * Get unified content (tries CMS/new system first, falls back to old)
  */
 export async function getUnifiedContent(
-  bandId: string = "template-band"
+  bandId: string = "template-band",
 ): Promise<{
   source: "cms" | "new" | "old";
   config: BandWebsiteConfig;
@@ -165,7 +165,7 @@ export async function getUnifiedContent(
               "image-4.jpg",
             ].map(
               (img) =>
-                `/content/bands/${content.profile.id}/assets/gallery/${img}`
+                `/content/bands/${content.profile.id}/assets/gallery/${img}`,
             ),
           },
         },
@@ -175,7 +175,7 @@ export async function getUnifiedContent(
     } catch (error) {
       console.warn(
         "Failed to load new content, falling back to old config:",
-        error
+        error,
       );
     }
   }

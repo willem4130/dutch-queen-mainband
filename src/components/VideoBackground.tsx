@@ -50,7 +50,7 @@ export default function VideoBackground({
   };
 
   const handleVideoError = (
-    e: React.SyntheticEvent<HTMLVideoElement, Event>
+    e: React.SyntheticEvent<HTMLVideoElement, Event>,
   ) => {
     console.error("Video error:", e);
     console.error("Failed to load video:", videos[currentVideoIndex]);

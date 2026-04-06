@@ -170,7 +170,7 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
       {
         threshold: 0.5, // Trigger when 50% of video is visible
         rootMargin: "0px",
-      }
+      },
     );
 
     const section = document.getElementById("home");
@@ -250,8 +250,7 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 }
                 className="absolute z-0"
                 style={{
-                  objectFit:
-                    deviceType === "desktop" ? "cover" : "contain",
+                  objectFit: deviceType === "desktop" ? "cover" : "contain",
                   objectPosition: "center center",
                   ...(deviceType === "desktop"
                     ? {

@@ -29,7 +29,7 @@ import type {
  */
 export function useBandContent(
   bandId?: string,
-  source?: ContentSource
+  source?: ContentSource,
 ): ContentLoadState & { refetch: () => Promise<void> } {
   const [state, setState] = useState<ContentLoadState>({
     loading: true,
@@ -133,7 +133,7 @@ export function useMediaAssets(bandId?: string): {
       setAssets(mediaAssets);
     } catch (err) {
       setError(
-        err instanceof Error ? err : new Error("Failed to load media assets")
+        err instanceof Error ? err : new Error("Failed to load media assets"),
       );
     } finally {
       setLoading(false);
@@ -201,7 +201,7 @@ export function useUpcomingShows(limit?: number): ShowsContent["upcoming"] {
     .filter((show: { date: string }) => new Date(show.date) >= new Date())
     .sort(
       (a: { date: string }, b: { date: string }) =>
-        new Date(a.date).getTime() - new Date(b.date).getTime()
+        new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
 
   return limit ? upcoming.slice(0, limit) : upcoming;
@@ -218,11 +218,11 @@ export function useFeaturedShows(): ShowsContent["upcoming"] {
   return shows.upcoming
     .filter(
       (show: { featured?: boolean; date: string }) =>
-        show.featured && new Date(show.date) >= new Date()
+        show.featured && new Date(show.date) >= new Date(),
     )
     .sort(
       (a: { date: string }, b: { date: string }) =>
-        new Date(a.date).getTime() - new Date(b.date).getTime()
+        new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
 }
 

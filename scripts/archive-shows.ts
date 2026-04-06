@@ -19,11 +19,11 @@
  *   npm run archive-shows:verify       # Verify integrity
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
-import * as crypto from 'crypto';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import * as fs from "fs";
+import * as path from "path";
+import * as crypto from "crypto";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 // ES module compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -38,7 +38,7 @@ interface Show {
   time: string;
   venue: string;
   city: string;
-  status: 'tickets' | 'sold-out';
+  status: "tickets" | "sold-out";
   ticketUrl?: string;
   [key: string]: unknown;
 }
@@ -95,19 +95,29 @@ interface ValidationResult {
 // Configuration
 // ============================================================================
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
-const UNPLUGGED_ROOT = path.resolve(PROJECT_ROOT, '..', 'Queenwebsite_v3_UNPLUGGED');
+const PROJECT_ROOT = path.resolve(__dirname, "..");
+const UNPLUGGED_ROOT = path.resolve(
+  PROJECT_ROOT,
+  "..",
+  "Queenwebsite_v3_UNPLUGGED",
+);
 
 const SITES = [
   {
-    name: 'The Dutch Queen (Full Band)',
-    filePath: path.join(PROJECT_ROOT, 'content/bands/the-dutch-queen/data/shows.json'),
-    backupDir: path.join(PROJECT_ROOT, 'backups'),
+    name: "The Dutch Queen (Full Band)",
+    filePath: path.join(
+      PROJECT_ROOT,
+      "content/bands/the-dutch-queen/data/shows.json",
+    ),
+    backupDir: path.join(PROJECT_ROOT, "backups"),
   },
   {
-    name: 'The Dutch Queen Unplugged',
-    filePath: path.join(UNPLUGGED_ROOT, 'content/bands/the-dutch-queen-unplugged/data/shows.json'),
-    backupDir: path.join(UNPLUGGED_ROOT, 'backups'),
+    name: "The Dutch Queen Unplugged",
+    filePath: path.join(
+      UNPLUGGED_ROOT,
+      "content/bands/the-dutch-queen-unplugged/data/shows.json",
+    ),
+    backupDir: path.join(UNPLUGGED_ROOT, "backups"),
   },
 ];
 
@@ -152,14 +162,17 @@ function parseShowDate(dateString: string): DateParseResult {
  * Determine if show should be archived based on date
  * CRITICAL: Only archive shows BEFORE today (not equal to today)
  */
-function shouldArchiveShow(showDateString: string, referenceDate: Date): ArchiveDecision {
+function shouldArchiveShow(
+  showDateString: string,
+  referenceDate: Date,
+): ArchiveDecision {
   const parseResult = parseShowDate(showDateString);
 
   // SAFETY: If we can't parse the date, DO NOT archive it
   if (!parseResult.success) {
     return {
       shouldArchive: false,
-      reason: `Could not parse date safely: ${parseResult.errors.join(', ')}`,
+      reason: `Could not parse date safely: ${parseResult.errors.join(", ")}`,
       showDate: null,
       daysAgo: 0,
     };
@@ -208,16 +221,16 @@ function shouldArchiveShow(showDateString: string, referenceDate: Date): Archive
  * Calculate SHA256 hash of file
  */
 function calculateFileHash(filePath: string): string {
-  const content = fs.readFileSync(filePath, 'utf-8');
-  return crypto.createHash('sha256').update(content).digest('hex');
+  const content = fs.readFileSync(filePath, "utf-8");
+  return crypto.createHash("sha256").update(content).digest("hex");
 }
 
 /**
  * Validate shows.json file structure
  */
 function validateShowsStructure(data: unknown): ValidationResult {
-  if (typeof data !== 'object' || data === null) {
-    return { valid: false, error: 'Data is not an object' };
+  if (typeof data !== "object" || data === null) {
+    return { valid: false, error: "Data is not an object" };
   }
 
   const showsData = data as Partial<ShowsData>;
@@ -231,12 +244,12 @@ function validateShowsStructure(data: unknown): ValidationResult {
     return { valid: false, error: 'Missing or invalid "past" array' };
   }
 
-  if (!showsData.settings || typeof showsData.settings !== 'object') {
+  if (!showsData.settings || typeof showsData.settings !== "object") {
     return { valid: false, error: 'Missing or invalid "settings" object' };
   }
 
   // Validate each show has required fields
-  const requiredFields = ['date', 'time', 'venue', 'city', 'status'];
+  const requiredFields = ["date", "time", "venue", "city", "status"];
   for (let i = 0; i < showsData.upcoming.length; i++) {
     const show = showsData.upcoming[i] as Partial<Show>;
     for (const field of requiredFields) {
@@ -256,7 +269,7 @@ function validateShowsStructure(data: unknown): ValidationResult {
  * Create timestamped backup of shows.json file
  */
 function createBackup(filePath: string, backupDir: string): string {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const backupFileName = `shows-backup-${timestamp}.json`;
   const backupPath = path.join(backupDir, backupFileName);
 
@@ -274,16 +287,19 @@ function createBackup(filePath: string, backupDir: string): string {
 /**
  * Write shows data to file atomically
  */
-async function writeShowsFile(filePath: string, data: ShowsData): Promise<void> {
+async function writeShowsFile(
+  filePath: string,
+  data: ShowsData,
+): Promise<void> {
   const tmpPath = `${filePath}.tmp`;
   const backupPath = `${filePath}.backup`;
 
   try {
     // Write to temporary file
-    fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), 'utf-8');
+    fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), "utf-8");
 
     // Validate temporary file
-    const tmpContent = fs.readFileSync(tmpPath, 'utf-8');
+    const tmpContent = fs.readFileSync(tmpPath, "utf-8");
     JSON.parse(tmpContent); // Will throw if invalid
 
     // Create backup of current file
@@ -324,19 +340,21 @@ async function writeShowsFile(filePath: string, data: ShowsData): Promise<void> 
 function generateReport(
   result: ArchiveResult,
   backupPath: string,
-  reportType: 'backup' | 'dryrun' | 'execute'
+  reportType: "backup" | "dryrun" | "execute",
 ): string {
-  const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  let report = '';
+  const timestamp = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let report = "";
 
-  if (reportType === 'backup') {
+  if (reportType === "backup") {
     report += `# Shows Backup Report\n\n`;
     report += `**Generated:** ${timestamp}\n`;
     report += `**Original File:** ${result.filePath}\n`;
     report += `**Website:** ${result.siteName}\n\n`;
 
     // Read original file for backup report
-    const data: ShowsData = JSON.parse(fs.readFileSync(result.filePath, 'utf-8'));
+    const data: ShowsData = JSON.parse(
+      fs.readFileSync(result.filePath, "utf-8"),
+    );
 
     report += `## Upcoming Shows (${data.upcoming.length} total)\n\n`;
     if (data.upcoming.length === 0) {
@@ -369,7 +387,7 @@ function generateReport(
     report += `## File Integrity\n\n`;
     report += `- SHA256: ${fileHash.slice(0, 16)}...\n`;
     report += `- File Size: ${stats.size.toLocaleString()} bytes\n`;
-    report += `- Last Modified: ${stats.mtime.toISOString().slice(0, 19).replace('T', ' ')}\n\n`;
+    report += `- Last Modified: ${stats.mtime.toISOString().slice(0, 19).replace("T", " ")}\n\n`;
 
     report += `---\n\n`;
     report += `To restore this backup:\n`;
@@ -378,7 +396,7 @@ function generateReport(
     report += `\`\`\`\n`;
   } else {
     // Dry-run or execute report
-    report += `# Shows Archive ${reportType === 'dryrun' ? 'Dry Run' : 'Execution'} Report\n\n`;
+    report += `# Shows Archive ${reportType === "dryrun" ? "Dry Run" : "Execution"} Report\n\n`;
     report += `**Generated:** ${timestamp}\n`;
     report += `**Website:** ${result.siteName}\n`;
     report += `**File:** ${result.filePath}\n\n`;
@@ -391,13 +409,13 @@ function generateReport(
     report += `- **Total past shows:** ${result.totalPast}\n\n`;
 
     if (result.archived > 0) {
-      report += `## Shows ${reportType === 'dryrun' ? 'To Be' : ''} Archived\n\n`;
+      report += `## Shows ${reportType === "dryrun" ? "To Be" : ""} Archived\n\n`;
       result.archivedShows.forEach((show, index) => {
         report += `${index + 1}. **${show.date}** - ${show.venue}, ${show.city} (${show.daysAgo} day(s) ago)\n`;
       });
       report += `\n`;
     } else {
-      report += `## No Shows ${reportType === 'dryrun' ? 'To Be' : ''} Archived\n\n`;
+      report += `## No Shows ${reportType === "dryrun" ? "To Be" : ""} Archived\n\n`;
       report += `All shows are either today or in the future.\n\n`;
     }
 
@@ -433,25 +451,33 @@ function performSanityChecks(result: ArchiveResult): string[] {
 
   // Check 1: Not archiving ALL shows
   if (result.remaining === 0 && result.archived > 0) {
-    warnings.push('⚠️  All upcoming shows would be archived. This seems unusual.');
+    warnings.push(
+      "⚠️  All upcoming shows would be archived. This seems unusual.",
+    );
   }
 
   // Check 2: Not archiving too many shows at once
   if (result.archived > 10) {
-    warnings.push(`⚠️  ${result.archived} shows would be archived. This seems high.`);
+    warnings.push(
+      `⚠️  ${result.archived} shows would be archived. This seems high.`,
+    );
   }
 
   // Check 3: Not accidentally archiving future shows
   for (const show of result.archivedShows) {
     if (show.daysAgo < 0) {
-      warnings.push(`❌ Future show would be archived: ${show.date} (${Math.abs(show.daysAgo)} days ahead)`);
+      warnings.push(
+        `❌ Future show would be archived: ${show.date} (${Math.abs(show.daysAgo)} days ahead)`,
+      );
     }
   }
 
   // Check 4: Today's shows are preserved
   for (const show of result.archivedShows) {
     if (show.daysAgo === 0) {
-      warnings.push(`⚠️  Today's show would be archived: ${show.date}. This may not be desired.`);
+      warnings.push(
+        `⚠️  Today's show would be archived: ${show.date}. This may not be desired.`,
+      );
     }
   }
 
@@ -465,12 +491,12 @@ function archiveShows(
   siteName: string,
   filePath: string,
   backupDir: string,
-  dryRun: boolean
+  dryRun: boolean,
 ): ArchiveResult {
   const today = new Date();
 
   // Read shows data
-  const data: ShowsData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  const data: ShowsData = JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
   // Validate structure
   const validation = validateShowsStructure(data);
@@ -503,7 +529,7 @@ function archiveShows(
     archived: toArchive.length,
     remaining: toKeep.length,
     totalPast: originalPast + toArchive.length,
-    archivedShows: toArchive.map(show => {
+    archivedShows: toArchive.map((show) => {
       const decision = shouldArchiveShow(show.date, today);
       return {
         date: show.date,
@@ -546,22 +572,22 @@ function archiveShows(
  */
 function main() {
   const args = process.argv.slice(2);
-  const mode = args[0] || '--dry-run';
+  const mode = args[0] || "--dry-run";
 
-  console.log('='.repeat(70));
-  if (mode === '--execute') {
-    console.log('Shows Archive Script - EXECUTION MODE');
-    console.log('⚠️  This will modify shows.json files!');
-  } else if (mode === '--verify') {
-    console.log('Shows Archive Script - VERIFICATION MODE');
+  console.log("=".repeat(70));
+  if (mode === "--execute") {
+    console.log("Shows Archive Script - EXECUTION MODE");
+    console.log("⚠️  This will modify shows.json files!");
+  } else if (mode === "--verify") {
+    console.log("Shows Archive Script - VERIFICATION MODE");
   } else {
-    console.log('Shows Archive Script - DRY RUN MODE');
-    console.log('(No changes will be made)');
+    console.log("Shows Archive Script - DRY RUN MODE");
+    console.log("(No changes will be made)");
   }
-  console.log('='.repeat(70));
+  console.log("=".repeat(70));
   console.log();
 
-  const dryRun = mode !== '--execute';
+  const dryRun = mode !== "--execute";
 
   // Process each site
   for (const site of SITES) {
@@ -582,17 +608,24 @@ function main() {
       console.log(`✅ Backup created: ${path.basename(backupPath)}`);
 
       // Generate backup report
-      const result = archiveShows(site.name, site.filePath, site.backupDir, true);
-      const backupReport = generateReport(result, backupPath, 'backup');
-      const backupReportPath = backupPath.replace('.json', '-report.md');
-      fs.writeFileSync(backupReportPath, backupReport, 'utf-8');
+      const result = archiveShows(
+        site.name,
+        site.filePath,
+        site.backupDir,
+        true,
+      );
+      const backupReport = generateReport(result, backupPath, "backup");
+      const backupReportPath = backupPath.replace(".json", "-report.md");
+      fs.writeFileSync(backupReportPath, backupReport, "utf-8");
       console.log(`✅ Backup report: ${path.basename(backupReportPath)}`);
       console.log();
 
-      if (mode === '--verify') {
+      if (mode === "--verify") {
         // Verification mode
-        console.log('Verification Results:');
-        console.log(`  - Total shows: ${result.originalUpcoming + result.originalPast}`);
+        console.log("Verification Results:");
+        console.log(
+          `  - Total shows: ${result.originalUpcoming + result.originalPast}`,
+        );
         console.log(`  - Upcoming shows: ${result.originalUpcoming}`);
         console.log(`  - Past shows: ${result.originalPast}`);
         console.log(`  - Structure: ✅ Valid`);
@@ -601,52 +634,71 @@ function main() {
       }
 
       // Archive shows
-      const archiveResult = archiveShows(site.name, site.filePath, site.backupDir, dryRun);
+      const archiveResult = archiveShows(
+        site.name,
+        site.filePath,
+        site.backupDir,
+        dryRun,
+      );
 
       // Display results
-      console.log('Analysis:');
-      console.log(`  - Total shows: ${archiveResult.originalUpcoming + archiveResult.originalPast}`);
-      console.log(`  - Shows ${dryRun ? 'to archive' : 'archived'}: ${archiveResult.archived}`);
+      console.log("Analysis:");
+      console.log(
+        `  - Total shows: ${archiveResult.originalUpcoming + archiveResult.originalPast}`,
+      );
+      console.log(
+        `  - Shows ${dryRun ? "to archive" : "archived"}: ${archiveResult.archived}`,
+      );
       console.log(`  - Shows remaining: ${archiveResult.remaining}`);
 
       if (archiveResult.archived > 0) {
         console.log();
-        console.log(`  Shows ${dryRun ? 'to be' : ''} archived:`);
-        archiveResult.archivedShows.forEach(show => {
-          console.log(`    • ${show.date} - ${show.venue}, ${show.city} (${show.daysAgo} days ago)`);
+        console.log(`  Shows ${dryRun ? "to be" : ""} archived:`);
+        archiveResult.archivedShows.forEach((show) => {
+          console.log(
+            `    • ${show.date} - ${show.venue}, ${show.city} (${show.daysAgo} days ago)`,
+          );
         });
       }
 
       if (archiveResult.warnings.length > 0) {
         console.log();
-        console.log('  Warnings:');
-        archiveResult.warnings.forEach(warning => {
+        console.log("  Warnings:");
+        archiveResult.warnings.forEach((warning) => {
           console.log(`    ${warning}`);
         });
       }
 
       // Generate report
-      const reportType = dryRun ? 'dryrun' : 'execute';
+      const reportType = dryRun ? "dryrun" : "execute";
       const report = generateReport(archiveResult, backupPath, reportType);
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-      const reportPath = path.join(site.backupDir, `shows-${reportType}-${timestamp}.md`);
-      fs.writeFileSync(reportPath, report, 'utf-8');
+      const timestamp = new Date()
+        .toISOString()
+        .replace(/[:.]/g, "-")
+        .slice(0, 19);
+      const reportPath = path.join(
+        site.backupDir,
+        `shows-${reportType}-${timestamp}.md`,
+      );
+      fs.writeFileSync(reportPath, report, "utf-8");
       console.log();
       console.log(`✅ Report generated: ${path.basename(reportPath)}`);
       console.log();
 
       if (dryRun && archiveResult.archived > 0) {
-        console.log('To execute this operation, run:');
-        console.log('  npm run archive-shows:execute');
+        console.log("To execute this operation, run:");
+        console.log("  npm run archive-shows:execute");
       } else if (!dryRun && archiveResult.archived > 0) {
-        console.log('✅ Changes applied successfully!');
-        console.log('Verify with: npm run archive-shows:verify');
+        console.log("✅ Changes applied successfully!");
+        console.log("Verify with: npm run archive-shows:verify");
       } else {
-        console.log('No changes needed - all shows are today or in the future.');
+        console.log(
+          "No changes needed - all shows are today or in the future.",
+        );
       }
 
       console.log();
-      console.log('-'.repeat(70));
+      console.log("-".repeat(70));
       console.log();
     } catch (error) {
       console.error(`❌ Error processing ${site.name}:`, error);
@@ -654,9 +706,9 @@ function main() {
     }
   }
 
-  console.log('='.repeat(70));
-  console.log('Archive script completed');
-  console.log('='.repeat(70));
+  console.log("=".repeat(70));
+  console.log("Archive script completed");
+  console.log("=".repeat(70));
 }
 
 // Run main function

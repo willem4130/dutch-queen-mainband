@@ -7,16 +7,19 @@ This project has been successfully created as a complete clone of your productio
 ## Project Information
 
 ### Local Development
+
 - **Directory**: `~/Queenwebsite_v3_UNPLUGGED`
 - **Band ID**: `the-dutch-queen-unplugged`
 - **Environment File**: `.env.local` (configured with correct band ID)
 
 ### GitHub Repository
+
 - **URL**: https://github.com/willem4130/Queenwebsite_v3_UNPLUGGED
 - **Status**: ✅ Created and pushed
 - **Commits**: Configuration complete
 
 ### Vercel Deployment
+
 - **Status**: ⏳ Ready for deployment
 - **Project Name**: `the-dutch-queen-unplugged`
 - **Next Steps**: Connect GitHub repo to Vercel manually or run:
@@ -28,6 +31,7 @@ This project has been successfully created as a complete clone of your productio
 ## Production Site Safety ✅
 
 **Your production site is completely untouched:**
+
 - **Production Directory**: `~/251002_QueenWebsitev2/dutch-queen-mainband-website`
 - **Git Status**: Clean working tree (verified)
 - **Environment**: Still configured with `NEXT_PUBLIC_BAND_ID=the-dutch-queen`
@@ -54,11 +58,13 @@ This project has been successfully created as a complete clone of your productio
 Follow the guide in `UNPLUGGED_CUSTOMIZATION_GUIDE.md` to update:
 
 **Required:**
+
 - [ ] Hero videos (desktop, tablet, mobile - MP4 & WebM)
 - [ ] About section text
 - [ ] Gallery images
 
 **Optional:**
+
 - [ ] Background images
 - [ ] Show dates
 - [ ] Contact information
@@ -76,6 +82,7 @@ Open http://localhost:3000 to preview
 ### Step 3: Deploy to Vercel
 
 **Option A: Automatic (Recommended)**
+
 1. Go to https://vercel.com
 2. Click "Add New Project"
 3. Import `willem4130/Queenwebsite_v3_UNPLUGGED` from GitHub
@@ -85,6 +92,7 @@ Open http://localhost:3000 to preview
 5. Deploy
 
 **Option B: CLI**
+
 ```bash
 cd ~/Queenwebsite_v3_UNPLUGGED
 vercel deploy --prod --yes
@@ -145,13 +153,13 @@ Vercel will automatically redeploy.
 
 ## Quick Reference
 
-| Aspect | Production | Unplugged |
-|--------|-----------|-----------|
-| **Local Dir** | `~/251002_QueenWebsitev2/dutch-queen-mainband-website` | `~/Queenwebsite_v3_UNPLUGGED` |
-| **GitHub** | willem4130/251002_Queenwebsite_v3 | willem4130/Queenwebsite_v3_UNPLUGGED |
-| **Band ID** | `the-dutch-queen` | `the-dutch-queen-unplugged` |
-| **Content Folder** | `content/bands/the-dutch-queen/` | `content/bands/the-dutch-queen-unplugged/` |
-| **Vercel** | the-dutch-queen-full-show-v3 | the-dutch-queen-unplugged (to setup) |
+| Aspect             | Production                                             | Unplugged                                  |
+| ------------------ | ------------------------------------------------------ | ------------------------------------------ |
+| **Local Dir**      | `~/251002_QueenWebsitev2/dutch-queen-mainband-website` | `~/Queenwebsite_v3_UNPLUGGED`              |
+| **GitHub**         | willem4130/251002_Queenwebsite_v3                      | willem4130/Queenwebsite_v3_UNPLUGGED       |
+| **Band ID**        | `the-dutch-queen`                                      | `the-dutch-queen-unplugged`                |
+| **Content Folder** | `content/bands/the-dutch-queen/`                       | `content/bands/the-dutch-queen-unplugged/` |
+| **Vercel**         | the-dutch-queen-full-show-v3                           | the-dutch-queen-unplugged (to setup)       |
 
 ---
 

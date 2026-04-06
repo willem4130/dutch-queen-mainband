@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { useAnalyticsContext } from '@/providers/AnalyticsProvider';
+import { useCallback } from "react";
+import { useAnalyticsContext } from "@/providers/AnalyticsProvider";
 import {
   trackEvent as baseTrackEvent,
   trackShowClick as baseTrackShowClick,
@@ -13,14 +13,15 @@ import {
   trackDownload as baseTrackDownload,
   trackExternalLinkClick as baseTrackExternalLinkClick,
   trackSectionView as baseTrackSectionView,
-} from '@/lib/analytics';
+} from "@/lib/analytics";
 
 /**
  * Hook for tracking analytics events
  * Provides consent-aware tracking functions
  */
 export function useAnalytics() {
-  const { hasAnalyticsConsent, isConsentDetermined, revokeConsent } = useAnalyticsContext();
+  const { hasAnalyticsConsent, isConsentDetermined, revokeConsent } =
+    useAnalyticsContext();
 
   // Generic event tracking
   const trackEvent = useCallback(
@@ -28,7 +29,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackEvent({ name, properties });
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Show click tracking
@@ -37,7 +38,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackShowClick(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Gallery image view tracking
@@ -46,7 +47,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackGalleryImageView(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Lightbox navigate tracking
@@ -55,7 +56,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackLightboxNavigate(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Video play tracking
@@ -64,7 +65,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackVideoPlay(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Social click tracking
@@ -73,7 +74,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackSocialClick(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Pro page view tracking
@@ -82,7 +83,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackProPageView(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Download tracking
@@ -91,7 +92,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackDownload(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // External link click tracking
@@ -100,7 +101,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackExternalLinkClick(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   // Section view tracking
@@ -109,7 +110,7 @@ export function useAnalytics() {
       if (!hasAnalyticsConsent) return;
       baseTrackSectionView(params);
     },
-    [hasAnalyticsConsent]
+    [hasAnalyticsConsent],
   );
 
   return {

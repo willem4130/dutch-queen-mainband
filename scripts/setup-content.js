@@ -51,7 +51,7 @@ function logWarning(message) {
 function extractContent(markdown, sectionTitle) {
   const regex = new RegExp(
     `###?\\s*${sectionTitle}[\\s\\S]*?\`\`\`([\\s\\S]*?)\`\`\``,
-    "i"
+    "i",
   );
   const match = markdown.match(regex);
   return match ? match[1].trim() : "";
@@ -60,7 +60,7 @@ function extractContent(markdown, sectionTitle) {
 function extractMultilineContent(markdown, sectionTitle) {
   const regex = new RegExp(
     `###?\\s*${sectionTitle}[\\s\\S]*?\`\`\`([\\s\\S]*?)\`\`\``,
-    "i"
+    "i",
   );
   const match = markdown.match(regex);
   return match ? match[1].trim() : "";
@@ -74,7 +74,7 @@ function parseBandContent() {
     logError("01_BAND_CONTENT.md not found!");
     log(
       "Please create 01_BAND_CONTENT.md using the provided template.",
-      "yellow"
+      "yellow",
     );
     process.exit(1);
   }
@@ -120,7 +120,7 @@ function parseBandContent() {
   // Extract members (simple parsing - looks for Member sections)
   const members = [];
   const memberMatches = content.matchAll(
-    /### Member \d+[\s\S]*?(?=### Member \d+|## \d+\.|$)/g
+    /### Member \d+[\s\S]*?(?=### Member \d+|## \d+\.|$)/g,
   );
 
   for (const memberSection of memberMatches) {
@@ -143,7 +143,7 @@ function parseBandContent() {
   // Extract achievements
   const achievements = [];
   const achievementMatches = content.matchAll(
-    /### (\d{4})[\s\S]*?\`\`\`([\\s\\S]*?)\`\`\`/g
+    /### (\d{4})[\s\S]*?\`\`\`([\\s\\S]*?)\`\`\`/g,
   );
 
   for (const match of achievementMatches) {
@@ -157,7 +157,7 @@ function parseBandContent() {
   // Extract shows
   const shows = [];
   const showMatches = content.matchAll(
-    /### Show \d+[\s\S]*?(?=### Show \d+|## Setup Instructions|$)/g
+    /### Show \d+[\s\S]*?(?=### Show \d+|## Setup Instructions|$)/g,
   );
 
   for (const showSection of showMatches) {
@@ -305,7 +305,7 @@ function generateJSONFiles(data, heroConfig) {
 
   fs.writeFileSync(
     path.join(contentDir, "band-profile.json"),
-    JSON.stringify(bandProfile, null, 2)
+    JSON.stringify(bandProfile, null, 2),
   );
   logSuccess("Generated: band-profile.json");
 
@@ -320,7 +320,7 @@ function generateJSONFiles(data, heroConfig) {
 
   fs.writeFileSync(
     path.join(dataDir, "about.json"),
-    JSON.stringify(about, null, 2)
+    JSON.stringify(about, null, 2),
   );
   logSuccess("Generated: data/about.json");
 
@@ -333,18 +333,18 @@ function generateJSONFiles(data, heroConfig) {
 
   fs.writeFileSync(
     path.join(dataDir, "contact.json"),
-    JSON.stringify(contact, null, 2)
+    JSON.stringify(contact, null, 2),
   );
   logSuccess("Generated: data/contact.json");
 
   // Generate social.json
   const social = Object.fromEntries(
-    Object.entries(data.social).filter(([, value]) => value && value.trim())
+    Object.entries(data.social).filter(([, value]) => value && value.trim()),
   );
 
   fs.writeFileSync(
     path.join(dataDir, "social.json"),
-    JSON.stringify(social, null, 2)
+    JSON.stringify(social, null, 2),
   );
   logSuccess("Generated: data/social.json");
 
@@ -362,7 +362,7 @@ function generateJSONFiles(data, heroConfig) {
 
   fs.writeFileSync(
     path.join(dataDir, "shows.json"),
-    JSON.stringify(shows, null, 2)
+    JSON.stringify(shows, null, 2),
   );
   logSuccess("Generated: data/shows.json");
 
@@ -423,7 +423,7 @@ function main() {
     validation.errors.forEach((err) => log(`  • ${err}`, "red"));
     log(
       "\nPlease fix these errors in 01_BAND_CONTENT.md and try again.",
-      "yellow"
+      "yellow",
     );
     process.exit(1);
   }
