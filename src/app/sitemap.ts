@@ -1,10 +1,8 @@
 import type { MetadataRoute } from "next";
-
-const BAND_API_URL =
-  "https://dutch-queen-admin.vercel.app/api/bands/the-dutch-queen";
+import { siteConfig, bandApiUrl } from "@/lib/site-config";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://thedutchqueen.com";
+  const baseUrl = siteConfig.siteUrl;
 
   const staticEntries: MetadataRoute.Sitemap = [
     {
@@ -34,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
-    const res = await fetch(BAND_API_URL, { next: { revalidate: 3600 } });
+    const res = await fetch(bandApiUrl, { next: { revalidate: 3600 } });
     const data = await res.json();
     const upcomingShows = data.shows?.upcoming || [];
 

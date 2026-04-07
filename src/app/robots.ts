@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { siteConfig } from "@/lib/site-config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/"],
       },
     ],
-    sitemap: "https://thedutchqueen.com/sitemap.xml",
+    sitemap: `${siteConfig.siteUrl}/sitemap.xml`,
   };
 }

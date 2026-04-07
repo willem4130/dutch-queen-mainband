@@ -43,6 +43,7 @@ import {
   injectCSSVariables,
 } from "../../config/config-utils";
 import { BandWebsiteConfig, defaultConfig } from "../../config/band.config";
+import { siteConfig } from "@/lib/site-config";
 
 // ================================
 // MAIN CONFIGURATION HOOK
@@ -511,7 +512,7 @@ export function usePresskit() {
 
   useEffect(() => {
     const fetchPresskit = async () => {
-      const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
+      const bandId = siteConfig.bandId;
       const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
       const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
 
@@ -557,7 +558,7 @@ export function useRiders() {
 
   useEffect(() => {
     const fetchRiders = async () => {
-      const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
+      const bandId = siteConfig.bandId;
       const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
       const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
 
@@ -608,7 +609,7 @@ export function useProData() {
 
   useEffect(() => {
     const fetchProData = async () => {
-      const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
+      const bandId = siteConfig.bandId;
       const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
       const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
 
@@ -630,7 +631,7 @@ export function useProData() {
         setData({
           presskit: apiData.presskit || null,
           riders: apiData.riders || null,
-          bandName: apiData.profile?.name || "The Dutch Queen",
+          bandName: apiData.profile?.name || siteConfig.bandName,
           contact: apiData.contact || { email: "" },
         });
       } catch (err) {

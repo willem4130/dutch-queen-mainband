@@ -14,6 +14,7 @@ import {
 import { useBandContentAsync } from "@/hooks/useConfig";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { throttle } from "@/lib/performance-utils";
+import { siteConfig } from "@/lib/site-config";
 import { SiteToggle } from "./SiteToggle";
 
 const navigation = [
@@ -22,9 +23,8 @@ const navigation = [
   { name: "About", href: "#about" },
 ];
 
-// Domain configuration - update these for production
-const FULLBAND_URL = "https://www.thedutchqueen.com";
-const UNPLUGGED_URL = "https://www.thedutchqueenunplugged.com";
+const FULLBAND_URL = siteConfig.siteToggle.fullbandUrl;
+const UNPLUGGED_URL = siteConfig.siteToggle.unpluggedUrl;
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

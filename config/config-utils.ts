@@ -15,6 +15,7 @@
  */
 
 import { BandWebsiteConfig, defaultConfig, genrePresets } from "./band.config";
+import { siteConfig } from "../src/lib/site-config";
 // Single-band content imports - hardcoded for The Dutch Queen
 import bandProfile from "../content/bands/the-dutch-queen/band-profile.json";
 import aboutData from "../content/bands/the-dutch-queen/data/about.json";
@@ -285,14 +286,13 @@ export async function getBandContentFromAPI(): Promise<{
     address?: string;
   };
 }> {
-  const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
   const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
   const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
 
   if (useCMS && apiUrl) {
     try {
-      const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        cache: "no-store", // Always fetch fresh data
+      const response = await fetch(`${apiUrl}/bands/${siteConfig.bandId}`, {
+        next: { revalidate: 300 },
       });
 
       if (!response.ok) {
@@ -302,7 +302,7 @@ export async function getBandContentFromAPI(): Promise<{
       const data = await response.json();
 
       return {
-        bandName: data.profile?.name || "The Dutch Queen",
+        bandName: data.profile?.name || siteConfig.bandName,
         tagline: data.profile?.tagline || "Een ode aan Queen",
         description: {
           short: data.about?.descriptions?.short || "",
@@ -335,7 +335,7 @@ export function getBandContent() {
     const config = getConfig();
 
     return {
-      bandName: bandProfile.name || "The Dutch Queen",
+      bandName: bandProfile.name || siteConfig.bandName,
       tagline: bandProfile.tagline || "Een ode aan Queen",
       description: {
         short: aboutData.descriptions.short,
@@ -414,15 +414,14 @@ interface ApiShow {
  * Now async to support API fetching
  */
 export async function getShowsData() {
-  const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
   const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
   const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
 
   // Try to fetch from API if enabled
   if (useCMS && apiUrl) {
     try {
-      const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        cache: "no-store", // Always fetch fresh data
+      const response = await fetch(`${apiUrl}/bands/${siteConfig.bandId}`, {
+        next: { revalidate: 300 },
       });
 
       if (!response.ok) {
@@ -541,14 +540,13 @@ export interface GalleryImage {
 export async function getGalleryData(): Promise<{
   images: GalleryImage[];
 }> {
-  const bandId = process.env.NEXT_PUBLIC_BAND_ID || "the-dutch-queen";
   const apiUrl = process.env.NEXT_PUBLIC_CMS_API_URL;
   const useCMS = process.env.NEXT_PUBLIC_USE_CMS === "true";
 
   if (useCMS && apiUrl) {
     try {
-      const response = await fetch(`${apiUrl}/bands/${bandId}`, {
-        cache: "no-store", // Always fetch fresh data
+      const response = await fetch(`${apiUrl}/bands/${siteConfig.bandId}`, {
+        next: { revalidate: 300 },
       });
 
       if (!response.ok) {
