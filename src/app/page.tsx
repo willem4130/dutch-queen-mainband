@@ -24,6 +24,7 @@ import { Hero } from "@/components/Hero";
 import { useBandContentAsync, useGallery, useShows } from "@/hooks/useConfig";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { throttle } from "@/lib/performance-utils";
+import { siteConfig } from "@/lib/site-config";
 
 // Lazy load AnimatePresence for lightbox (only loads when user clicks gallery)
 const AnimatePresence = lazy(() =>
@@ -288,6 +289,9 @@ function HomeContent() {
       <div className="relative w-full">
         <Hero onScrollToSection={scrollToSection} enableVideo={true} />
       </div>
+
+      {/* SEO: Visually hidden H1 for search engines and screen readers */}
+      <h1 className="sr-only">{siteConfig.bandName}</h1>
 
       {/* Shows Section - DRAMATIC: big parallax + scale swoosh */}
       <motion.section
