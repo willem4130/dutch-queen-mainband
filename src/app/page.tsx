@@ -243,6 +243,47 @@ function HomeContent() {
 
   return (
     <div className="relative w-full bg-black">
+      {/* Event JSON-LD for GEO/AEO — invisible structured data for AI discoverability */}
+      {upcomingShows.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              upcomingShows.map((show) => ({
+                "@context": "https://schema.org",
+                "@type": "MusicEvent",
+                name: `The Dutch Queen live at ${show.venue}`,
+                startDate: show.date,
+                location: {
+                  "@type": "Place",
+                  name: show.venue,
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: show.city,
+                    addressCountry: "NL",
+                  },
+                },
+                performer: {
+                  "@type": "MusicGroup",
+                  name: "The Dutch Queen",
+                },
+                ...(show.ticketUrl
+                  ? {
+                      offers: {
+                        "@type": "Offer",
+                        url: show.ticketUrl,
+                        availability: show.status === "sold-out"
+                          ? "https://schema.org/SoldOut"
+                          : "https://schema.org/InStock",
+                      },
+                    }
+                  : {}),
+              }))
+            ),
+          }}
+        />
+      )}
+
       {/* Hero Section - Static (no scroll lock) */}
       <div className="relative w-full">
         <Hero onScrollToSection={scrollToSection} enableVideo={true} />
