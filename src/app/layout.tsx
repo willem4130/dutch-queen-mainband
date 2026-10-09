@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 import { CookieConsent } from "@/components/CookieConsent";
 import { siteConfig, bandApiUrl } from "@/lib/site-config";
+import { membersJsonLd } from "@/lib/band-members";
 
 
 const SITE_URL = siteConfig.siteUrl;
@@ -129,6 +130,8 @@ export default async function RootLayout({
     const seo = data.profile?.seo || {};
     const mg = seo.structuredData?.musicGroup || {};
     const org = seo.structuredData?.organization || {};
+    // Line-up from the CMS (the band manages it in the admin).
+    const members = membersJsonLd(mg.members);
 
     musicGroupJsonLd = {
       "@context": "https://schema.org",
@@ -146,6 +149,7 @@ export default async function RootLayout({
       ...(org.contactPoint?.email && { email: org.contactPoint.email }),
       ...(org.sameAs &&
         org.sameAs.length > 0 && { sameAs: org.sameAs }),
+      ...(members.length > 0 && { member: members }),
     };
 
     websiteJsonLd = {
