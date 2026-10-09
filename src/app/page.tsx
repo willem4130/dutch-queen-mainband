@@ -1,5 +1,6 @@
 "use client";
 
+import { isoStartDate } from "@/lib/event-date";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ChevronDown,
@@ -254,7 +255,10 @@ function HomeContent() {
                 "@context": "https://schema.org",
                 "@type": "MusicEvent",
                 name: `The Dutch Queen live at ${show.venue}`,
-                startDate: show.date,
+                startDate: isoStartDate(show.date, show.time) ?? show.date,
+                eventStatus: "https://schema.org/EventScheduled",
+                eventAttendanceMode:
+                  "https://schema.org/OfflineEventAttendanceMode",
                 location: {
                   "@type": "Place",
                   name: show.venue,
@@ -279,8 +283,8 @@ function HomeContent() {
                       },
                     }
                   : {}),
-              }))
-            ),
+              })),
+            ).replace(/</g, "\\u003c"),
           }}
         />
       )}
@@ -471,6 +475,7 @@ function HomeContent() {
           <div className="relative h-16 flex-shrink-0">
             <motion.button
               onClick={() => scrollToSection("gallery")}
+              aria-label="Naar de galerij"
               className="absolute bottom-8 left-1/2 -translate-x-1/2 rounded-full p-2 text-white/60 transition-all duration-300 hover:scale-110 hover:bg-amber-900/20 hover:text-white/90 hover:shadow-lg hover:shadow-amber-900/30"
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}

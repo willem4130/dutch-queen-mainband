@@ -11,6 +11,15 @@ interface HeroProps {
   enableVideo?: boolean;
 }
 
+// Hero posters, versioned. The first paint (before device detection) uses a
+// <picture> with the SAME URLs as the <video poster>, so each device downloads
+// only its own poster, once.
+const POSTERS = {
+  mobile: "/videos/poster-mobile.jpg?v=20260228",
+  tablet: "/videos/poster-tablet.jpg?v=20260228",
+  desktop: "/videos/poster-desktop.jpg?v=20251220",
+} as const;
+
 export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
   const [isMuted, setIsMuted] = useState(true);
   const [volume, setVolume] = useState(1);
@@ -131,7 +140,8 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
       video.removeEventListener("playing", handlePlaying);
       video.removeEventListener("error", handleError);
     };
-  }, [enableVideo]);
+    // Re-run when the <video> (re)mounts after device detection.
+  }, [enableVideo, deviceType]);
 
   // Manage poster visibility based on device and video ready state
   useEffect(() => {
@@ -181,7 +191,8 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
     return () => {
       observer.disconnect();
     };
-  }, [enableVideo]);
+    // Re-run when the <video> (re)mounts after device detection.
+  }, [enableVideo, deviceType]);
 
   const scrollToSection = (sectionId: string) => {
     if (onScrollToSection) {
@@ -241,13 +252,7 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
                 muted
                 playsInline
                 preload="metadata"
-                poster={
-                  deviceType === "mobile"
-                    ? "/videos/poster-mobile.jpg?v=20260228"
-                    : deviceType === "tablet"
-                      ? "/videos/poster-tablet.jpg?v=20260228"
-                      : "/videos/poster-desktop.jpg?v=20251220"
-                }
+                poster={POSTERS[deviceType]}
                 className="absolute z-0"
                 style={{
                   objectFit: deviceType === "desktop" ? "cover" : "contain",
@@ -298,23 +303,24 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
               </video>
             </>
           ) : (
-            // Fallback static poster for Save Data mode
+            // Static poster: first paint (before device detection) + Save Data
             <div className="absolute inset-0 z-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={
-                  deviceType === "mobile"
-                    ? "/videos/poster-mobile.jpg"
-                    : "/videos/poster-desktop.jpg"
-                }
-                alt="The Dutch Queen"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                <p className="text-sm text-white/60">
-                  Video disabled (Data Saver mode)
-                </p>
-              </div>
+              <picture>
+                <source media="(max-width: 767px)" srcSet={POSTERS.mobile} />
+                <source media="(max-width: 1024px)" srcSet={POSTERS.tablet} />
+                <img
+                  src={POSTERS.desktop}
+                  alt="The Dutch Queen"
+                  className="absolute inset-0 my-auto h-[calc(100%-3rem)] w-full object-contain min-[1025px]:h-full min-[1025px]:object-cover"
+                />
+              </picture>
+              {!shouldLoadVideo && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                  <p className="text-sm text-white/60">
+                    Video disabled (Data Saver mode)
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
@@ -334,11 +340,7 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={
-                    deviceType === "mobile"
-                      ? "/videos/poster-mobile.jpg"
-                      : "/videos/poster-desktop.jpg"
-                  }
+                  src={POSTERS[deviceType ?? "desktop"]}
                   alt="The Dutch Queen"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
@@ -402,6 +404,7 @@ export function Hero({ onScrollToSection, enableVideo = false }: HeroProps) {
         <div className="absolute bottom-8" style={{ position: "absolute" }}>
           <motion.button
             onClick={() => scrollToSection("shows")}
+            aria-label="Naar de shows"
             className="rounded-full p-2 text-white/60 transition-all duration-500 hover:bg-amber-900/20 hover:text-white/90 hover:shadow-lg hover:shadow-amber-900/30"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: [0, 10, 0] }}

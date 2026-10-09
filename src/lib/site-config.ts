@@ -9,7 +9,7 @@ export const siteConfig = {
   apiUrl: process.env.NEXT_PUBLIC_CMS_API_URL || "https://dutch-queen-admin.vercel.app/api",
   bandName: process.env.NEXT_PUBLIC_BAND_NAME || "The Dutch Queen",
   siteToggle: {
-    fullbandUrl: process.env.NEXT_PUBLIC_FULLBAND_URL || "https://www.thedutchqueen.com",
+    fullbandUrl: process.env.NEXT_PUBLIC_FULLBAND_URL || "https://thedutchqueen.com",
     unpluggedUrl: process.env.NEXT_PUBLIC_UNPLUGGED_URL || "https://www.thedutchqueenunplugged.com",
     mjUrl: process.env.NEXT_PUBLIC_MJ_URL || "https://mj-unplugged.com",
   },

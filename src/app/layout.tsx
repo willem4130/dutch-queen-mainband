@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -8,7 +7,6 @@ import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 import { CookieConsent } from "@/components/CookieConsent";
 import { siteConfig, bandApiUrl } from "@/lib/site-config";
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 const SITE_URL = siteConfig.siteUrl;
 
@@ -178,27 +176,7 @@ export default async function RootLayout({
             __html: JSON.stringify(websiteJsonLd),
           }}
         />
-        {/* Google Analytics 4 */}
-        {GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script
-              id="ga-init"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${GA_ID}');
-                `,
-              }}
-            />
-          </>
-        )}
+        {/* Google Analytics 4 loads only after cookie consent: see AnalyticsProvider + lib/ga.ts */}
       </head>
       <body
         className={`${inter.variable} overflow-x-hidden bg-black font-sans text-white antialiased`}

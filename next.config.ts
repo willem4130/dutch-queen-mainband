@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/webp", "image/avif"],
+    // Must list every quality used in <Image quality>; others are coerced to 75.
+    qualities: [65, 70, 75, 80],
   },
   async headers() {
     // Security headers applied to all routes

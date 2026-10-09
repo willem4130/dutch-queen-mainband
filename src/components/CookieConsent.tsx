@@ -6,6 +6,12 @@ import { Cookie, X, Shield } from "lucide-react";
 import { useAnalyticsContext } from "@/providers/AnalyticsProvider";
 import { getConsent } from "@/lib/analytics";
 
+// Nothing to consent to when this site runs no analytics (e.g. MJ today).
+const ANALYTICS_CONFIGURED = Boolean(
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ||
+    process.env.NEXT_PUBLIC_POSTHOG_KEY,
+);
+
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
   const { updateConsent, isConsentDetermined } = useAnalyticsContext();
@@ -33,8 +39,8 @@ export function CookieConsent() {
     setIsVisible(false);
   };
 
-  // Don't show if consent already determined
-  if (isConsentDetermined) {
+  // Don't show if consent already determined or there is no analytics
+  if (isConsentDetermined || !ANALYTICS_CONFIGURED) {
     return null;
   }
 

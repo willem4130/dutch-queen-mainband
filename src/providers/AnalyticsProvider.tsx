@@ -14,6 +14,9 @@ import {
   clearConsent,
   type ConsentState,
 } from "@/lib/analytics";
+import { loadGA, disableGA } from "@/lib/ga";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 // ============================================================
 // TYPES
@@ -46,11 +49,17 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [posthogInitialized, setPosthogInitialized] = useState(false);
 
-  // Load consent from localStorage on mount
+  // Load consent from localStorage on mount. GA starts only with explicit
+  // consent; otherwise remove any _ga cookies set before consent gating.
   useEffect(() => {
     const storedConsent = getConsent();
     setConsentState(storedConsent);
     setIsInitialized(true);
+    if (storedConsent?.analytics) {
+      loadGA(GA_ID);
+    } else {
+      disableGA(GA_ID);
+    }
   }, []);
 
   // Initialize PostHog when consent is given
@@ -94,6 +103,12 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
         version: "1.0",
       });
 
+      if (analytics) {
+        loadGA(GA_ID);
+      } else {
+        disableGA(GA_ID);
+      }
+
       // If user rejects, opt out of PostHog
       if (!analytics && posthogInitialized) {
         posthog.opt_out_capturing();
@@ -106,6 +121,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   const revokeConsent = useCallback(() => {
     clearConsent();
     setConsentState(null);
+    disableGA(GA_ID);
 
     // Opt out of PostHog
     if (posthogInitialized) {
