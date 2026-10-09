@@ -11,6 +11,7 @@ export const siteConfig = {
   siteToggle: {
     fullbandUrl: process.env.NEXT_PUBLIC_FULLBAND_URL || "https://www.thedutchqueen.com",
     unpluggedUrl: process.env.NEXT_PUBLIC_UNPLUGGED_URL || "https://www.thedutchqueenunplugged.com",
+    mjUrl: process.env.NEXT_PUBLIC_MJ_URL || "https://mj-unplugged.com",
   },
 } as const;
 
