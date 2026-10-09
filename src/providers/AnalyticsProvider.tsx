@@ -12,6 +12,7 @@ import {
   getConsent,
   setConsent,
   clearConsent,
+  clearPostHogStorage,
   type ConsentState,
 } from "@/lib/analytics";
 import { loadGA, disableGA } from "@/lib/ga";
@@ -59,6 +60,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       loadGA(GA_ID);
     } else {
       disableGA(GA_ID);
+      clearPostHogStorage();
     }
   }, []);
 
@@ -81,6 +83,11 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
           disable_session_recording: false,
           persistence: "localStorage",
           loaded: (ph) => {
+            // Init only runs with consent; undo an opt-out left behind by an
+            // earlier withdrawal, which PostHog remembers in localStorage.
+            if (ph.has_opted_out_capturing()) {
+              ph.opt_in_capturing();
+            }
             if (process.env.NODE_ENV === "development") {
               ph.debug();
             }
@@ -105,6 +112,10 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
 
       if (analytics) {
         loadGA(GA_ID);
+        // Accepting again after withdrawing: PostHog is still opted out.
+        if (posthogInitialized && posthog.has_opted_out_capturing()) {
+          posthog.opt_in_capturing();
+        }
       } else {
         disableGA(GA_ID);
       }
@@ -112,6 +123,9 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       // If user rejects, opt out of PostHog
       if (!analytics && posthogInitialized) {
         posthog.opt_out_capturing();
+      }
+      if (!analytics) {
+        clearPostHogStorage();
       }
     },
     [posthogInitialized],
@@ -128,6 +142,7 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       posthog.opt_out_capturing();
       posthog.reset();
     }
+    clearPostHogStorage();
   }, [posthogInitialized]);
 
   const value: AnalyticsContextType = {

@@ -59,6 +59,28 @@ export function clearConsent(): void {
   document.cookie = "tdq_consent=; path=/; max-age=0";
 }
 
+/**
+ * Remove PostHog's browser storage (its anonymous id and session state, keys
+ * "ph_…" / "__ph_…"), so nothing of it stays behind without consent.
+ */
+export function clearPostHogStorage(): void {
+  if (typeof window === "undefined") return;
+  try {
+    for (const store of [localStorage, sessionStorage]) {
+      const keys: string[] = [];
+      for (let i = 0; i < store.length; i++) {
+        const key = store.key(i);
+        if (key && (key.startsWith("ph_") || key.startsWith("__ph_"))) {
+          keys.push(key);
+        }
+      }
+      keys.forEach((key) => store.removeItem(key));
+    }
+  } catch {
+    // Storage blocked by the browser: there is nothing stored to clear.
+  }
+}
+
 export function hasAnalyticsConsent(): boolean {
   const consent = getConsent();
   return consent?.analytics === true;

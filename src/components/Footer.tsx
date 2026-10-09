@@ -1,10 +1,13 @@
 "use client";
 
 import { useBandContentAsync } from "@/hooks/useConfig";
+import { useAnalyticsContext } from "@/providers/AnalyticsProvider";
 
 export function Footer() {
   // Use async hook to get live data from CMS API
   const { content } = useBandContentAsync();
+  // Clears the cookie choice: analytics stop and the cookie banner returns.
+  const { revokeConsent } = useAnalyticsContext();
 
   return (
     <footer className="border-t border-white/10">
@@ -20,6 +23,14 @@ export function Footer() {
             >
               Privacy
             </a>
+            <span className="mx-2">·</span>
+            <button
+              type="button"
+              onClick={revokeConsent}
+              className="underline-offset-2 transition-colors hover:text-white/70 hover:underline"
+            >
+              Cookie-instellingen
+            </button>
           </p>
         </div>
       </div>

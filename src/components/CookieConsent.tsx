@@ -12,6 +12,11 @@ const ANALYTICS_CONFIGURED = Boolean(
     process.env.NEXT_PUBLIC_POSTHOG_KEY,
 );
 
+// Reject and accept must look the same: refusing has to be as easy as
+// accepting (AVG / Autoriteit Persoonsgegevens). Guarded by privacy.test.ts.
+const CHOICE_BUTTON =
+  "rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-medium text-black transition-all hover:bg-amber-400";
+
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
   const { updateConsent, isConsentDetermined } = useAnalyticsContext();
@@ -88,27 +93,28 @@ export function CookieConsent() {
                   </h3>
                   <p className="text-sm leading-relaxed text-white/70">
                     We use cookies and similar technologies to understand how
-                    you use our website, improve your experience, and show you
-                    personalized content. You can choose to accept or reject
-                    these cookies.
+                    visitors use our website, so we can improve it. You can
+                    choose to accept or reject these cookies.
                   </p>
                   <div className="flex items-center gap-2 text-xs text-white/50">
                     <Shield className="h-3.5 w-3.5" />
-                    <span>Your data is stored securely in the EU</span>
+                    <span>No statistics are collected unless you accept</span>
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex flex-shrink-0 flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
                   <button
+                    type="button"
                     onClick={handleReject}
-                    className="rounded-lg border border-white/20 bg-transparent px-5 py-2.5 text-sm font-medium text-white/80 transition-all hover:border-white/40 hover:bg-white/5 hover:text-white"
+                    className={CHOICE_BUTTON}
                   >
                     Reject All
                   </button>
                   <button
+                    type="button"
                     onClick={handleAccept}
-                    className="rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-medium text-black transition-all hover:bg-amber-400"
+                    className={CHOICE_BUTTON}
                   >
                     Accept All
                   </button>

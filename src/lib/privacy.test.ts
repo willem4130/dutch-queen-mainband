@@ -19,6 +19,11 @@ describe("privacy statement", () => {
     expect(read("src/components/CookieConsent.tsx")).toContain('href="/privacy"');
   });
 
+  it("gives Reject All and Accept All the same look", () => {
+    const banner = read("src/components/CookieConsent.tsx");
+    expect(banner.match(/className=\{CHOICE_BUTTON\}/g)).toHaveLength(2);
+  });
+
   it("offers a way to withdraw consent", () => {
     expect(page).toContain("<CookieSettingsButton />");
   });
