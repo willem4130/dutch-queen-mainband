@@ -243,6 +243,21 @@ function HomeContent() {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Arriving with a section hash (e.g. /#gallery from /privacy or a shared
+  // link): the browser jumps before the hero and CMS content have loaded,
+  // which then pushes the section down. Re-align once things have settled.
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!/^(shows|gallery|about)$/.test(id)) return;
+    const timers = [400, 1200].map((ms) =>
+      window.setTimeout(
+        () => document.getElementById(id)?.scrollIntoView({ block: "start" }),
+        ms,
+      ),
+    );
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, []);
+
   return (
     <div className="relative w-full bg-black">
       {/* Event JSON-LD for GEO/AEO — invisible structured data for AI discoverability */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X, Shield } from "lucide-react";
 import { useAnalyticsContext } from "@/providers/AnalyticsProvider";
@@ -16,18 +16,23 @@ export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
   const { updateConsent, isConsentDetermined } = useAnalyticsContext();
 
-  // Show banner if consent not yet determined
+  // Show the banner whenever there is no choice: on page load (after a short
+  // delay to prevent a flash) and right away after the visitor withdraws
+  // consent on the privacy page ("Cookie-instellingen wijzigen").
+  const isFirstCheck = useRef(true);
   useEffect(() => {
-    // Small delay to prevent flash on page load
+    if (isConsentDetermined) return;
+    const delay = isFirstCheck.current ? 1000 : 0;
+    isFirstCheck.current = false;
     const timer = setTimeout(() => {
       const consent = getConsent();
       if (!consent) {
         setIsVisible(true);
       }
-    }, 1000);
+    }, delay);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isConsentDetermined]);
 
   const handleAccept = () => {
     updateConsent(true);

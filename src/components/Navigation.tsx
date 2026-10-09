@@ -50,7 +50,12 @@ export function Navigation() {
   ) => {
     e.preventDefault();
     const element = document.querySelector(href);
-    element?.scrollIntoView({ behavior: "smooth" });
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Not on the homepage (e.g. /privacy, /pro): go to that section there.
+      window.location.assign(`/${href}`);
+    }
     setMobileMenuOpen(false);
   };
 

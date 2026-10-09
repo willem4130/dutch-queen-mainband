@@ -13,6 +13,13 @@ export function Footer() {
           <p className="text-sm text-white/40">
             © {new Date().getFullYear()}{" "}
             <span className="font-semibold">{content.bandName}</span>
+            <span className="mx-2">·</span>
+            <a
+              href="/privacy"
+              className="underline-offset-2 transition-colors hover:text-white/70 hover:underline"
+            >
+              Privacy
+            </a>
           </p>
         </div>
       </div>
