@@ -1,11 +1,9 @@
 "use client";
 
-import { useBandContentAsync } from "@/hooks/useConfig";
+import type { BandContentData } from "../../config/config-utils";
 import { useAnalyticsContext } from "@/providers/AnalyticsProvider";
 
-export function Footer() {
-  // Use async hook to get live data from CMS API
-  const { content } = useBandContentAsync();
+export function Footer({ content }: { content: BandContentData }) {
   // Clears the cookie choice: analytics stop and the cookie banner returns.
   const { revokeConsent } = useAnalyticsContext();
 

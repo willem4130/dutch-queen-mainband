@@ -1,5 +1,6 @@
 "use client";
 
+import type { BandContentData } from "../../config/config-utils";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
@@ -11,7 +12,6 @@ import {
   Phone,
   Youtube,
 } from "lucide-react";
-import { useBandContentAsync } from "@/hooks/useConfig";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { throttle } from "@/lib/performance-utils";
 import { siteConfig } from "@/lib/site-config";
@@ -27,11 +27,9 @@ const FULLBAND_URL = siteConfig.siteToggle.fullbandUrl;
 const UNPLUGGED_URL = siteConfig.siteToggle.unpluggedUrl;
 const MJ_URL = siteConfig.siteToggle.mjUrl;
 
-export function Navigation() {
+export function Navigation({ content }: { content: BandContentData }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  // Use async hook to get live data from CMS API
-  const { content } = useBandContentAsync();
   const { trackSocialClick } = useAnalytics();
 
   useEffect(() => {

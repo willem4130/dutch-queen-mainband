@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 import { CookieConsent } from "@/components/CookieConsent";
 import { siteConfig, bandApiUrl } from "@/lib/site-config";
+import { getBandData } from "../../config/config-utils";
 import { membersJsonLd } from "@/lib/band-members";
 
 
@@ -164,6 +165,9 @@ export default async function RootLayout({
     // Fallback JSON-LD already set above
   }
 
+  // Same request as the homepage (deduped by Next, cached 5 minutes)
+  const { content } = await getBandData();
+
   return (
     <html lang="nl" className="overflow-x-hidden">
       <head>
@@ -186,9 +190,9 @@ export default async function RootLayout({
         className={`${inter.variable} overflow-x-hidden bg-black font-sans text-white antialiased`}
       >
         <AnalyticsProvider>
-          <Navigation />
+          <Navigation content={content} />
           <main className="min-h-screen overflow-x-hidden">{children}</main>
-          <Footer />
+          <Footer content={content} />
           <CookieConsent />
         </AnalyticsProvider>
       </body>

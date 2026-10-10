@@ -280,39 +280,3 @@ export const defaultConfig: BandWebsiteConfig = {
 
   version: "1.0.0",
 };
-
-// ================================
-// GENRE PRESETS
-// ================================
-
-export const genrePresets = {
-  "edm-pop": {
-    ...defaultConfig.genre,
-    particleEffectsDensity: 1.0,
-    glowIntensity: 0.8,
-    motionSpeedMultiplier: 1.5,
-    colorSaturation: "neon",
-    borderRadiusScale: "rounded",
-  } as GenreFlexibilityControls,
-
-  "indie-rock": {
-    ...defaultConfig.genre,
-    particleEffectsDensity: 0.4,
-    glowIntensity: 0.1,
-    textureOverlays: "moderate",
-    motionSpeedMultiplier: 0.8,
-    colorSaturation: "muted",
-    borderRadiusScale: "subtle",
-  } as GenreFlexibilityControls,
-
-  "metal-rock": {
-    ...defaultConfig.genre,
-    particleEffectsDensity: 0.6,
-    glowIntensity: 0.0,
-    textureOverlays: "grungy",
-    shadowIntensity: "dramatic",
-    colorSaturation: "muted",
-    borderRadiusScale: "sharp",
-    contrastLevel: "high",
-  } as GenreFlexibilityControls,
-};
