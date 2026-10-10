@@ -55,7 +55,8 @@ A push to `main` can also trigger a production deploy. After deploying, load the
 
 ## More docs
 
-The other `*.md` files in this folder are older guides from the original template and may be out of date.
+- [ARCHIVE_SHOWS_GUIDE.md](./ARCHIVE_SHOWS_GUIDE.md): moving past shows from `upcoming` to `past` (`npm run archive-shows`).
+- [VIDEO_SPECIFICATIONS.md](./VIDEO_SPECIFICATIONS.md): exact encoding of the hero videos (iOS needs H.264 Baseline with an audio track).
 
 ## Licence
 

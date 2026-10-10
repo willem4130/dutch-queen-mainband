@@ -1,8 +1,0 @@
-Place your MP4 video files here.
-
-Recommended naming:
-- about-bg-1.mp4
-- about-bg-2.mp4
-- about-bg-3.mp4
-
-The VideoBackground component is configured to look for these files.
